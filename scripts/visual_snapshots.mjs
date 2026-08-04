@@ -97,6 +97,15 @@ try {
     await page.waitForTimeout(400);
 
     if (capture.target) {
+      await page.evaluate(() => {
+        document.querySelectorAll('body *').forEach((element) => {
+          const position = window.getComputedStyle(element).position;
+          if (position === 'fixed' || position === 'sticky') {
+            element.setAttribute('data-visual-qa-hidden', 'true');
+            element.style.visibility = 'hidden';
+          }
+        });
+      });
       await page.locator(capture.target).screenshot({
         path: `${outputDir}/${capture.name}`,
       });
