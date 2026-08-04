@@ -41,13 +41,17 @@ wait_http_200 "$BASE_URL/"
 
 docker run --rm \
   --network host \
+  -e BASE_URL="$BASE_URL" \
+  -e OUTPUT_DIR=/output \
+  -v "$ROOT_DIR":/workspace:ro \
   -v "$OUTPUT_DIR":/output \
   "$PLAYWRIGHT_IMAGE" \
   bash -lc "
-    npx --yes playwright@${PLAYWRIGHT_VERSION} screenshot --browser chromium --full-page --viewport-size='390,844' '${BASE_URL}/' /output/home-mobile-390.png
-    npx --yes playwright@${PLAYWRIGHT_VERSION} screenshot --browser chromium --full-page --viewport-size='768,1024' '${BASE_URL}/' /output/home-tablet-768.png
-    npx --yes playwright@${PLAYWRIGHT_VERSION} screenshot --browser chromium --full-page --viewport-size='1440,1000' '${BASE_URL}/' /output/home-desktop-1440.png
-    npx --yes playwright@${PLAYWRIGHT_VERSION} screenshot --browser chromium --full-page --viewport-size='1440,1000' '${BASE_URL}/servicios/electricidad-para-obras-y-refacciones-mendoza/' /output/service-desktop-1440.png
+    mkdir -p /tmp/visual-qa &&
+    cd /tmp/visual-qa &&
+    npm init -y >/dev/null 2>&1 &&
+    npm install --no-audit --no-fund --silent playwright@${PLAYWRIGHT_VERSION} &&
+    node /workspace/scripts/visual_snapshots.mjs
   "
 
 for snapshot in \
