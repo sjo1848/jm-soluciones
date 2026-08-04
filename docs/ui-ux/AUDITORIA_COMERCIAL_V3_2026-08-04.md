@@ -66,6 +66,17 @@ El encabezado ofrecía navegación y selector de tema, pero no la acción comerc
 
 Decisión: incorporar “Pedir presupuesto” como CTA persistente en desktop y dentro del menú mobile.
 
+### 6. Galería demasiado extensa
+
+La revisión mediante capturas full-page mostró que la galería ocupaba una proporción excesiva del recorrido y desplazaba testimonios, cobertura, FAQ y cierre comercial.
+
+Decisión:
+
+- mostrar una selección general inicial de nueve trabajos;
+- limitar cada categoría a seis elementos antes de expandir;
+- conservar filtros y lightbox;
+- permitir ampliar o contraer la galería voluntariamente.
+
 ## Cambios de esta iteración
 
 - navegación mobile simplificada;
@@ -75,7 +86,31 @@ Decisión: incorporar “Pedir presupuesto” como CTA persistente en desktop y 
 - nueva tarjeta de orientación inicial;
 - home reordenada según intención comercial;
 - capa visual `professional.css` con tipografía neutral y menos ruido decorativo;
-- compatibilidad del header con home y páginas internas.
+- compatibilidad del header con home y páginas internas;
+- galería progresiva con selección inicial;
+- capturas visuales responsive como artefacto de CI.
+
+## Validación ejecutada
+
+- Astro check: sin errores ni advertencias.
+- Vitest: 13/13 tests.
+- Build: 13 páginas estáticas.
+- Integridad de `dist`: correcta.
+- Validación de galería: correcta.
+- Smoke HTTP de staging: correcto.
+- Capturas revisadas en 390 px, 768 px y 1440 px.
+- Página de servicio revisada en 1440 px.
+
+## Resultado visual
+
+La versión final presenta:
+
+- propuesta de valor legible desde el primer viewport;
+- CTA de WhatsApp visible en header y hero;
+- recorrido comercial coherente;
+- navegación mobile sin duplicación;
+- galería acotada que funciona como prueba y no como catálogo dominante;
+- consistencia visual entre home y páginas de servicio.
 
 ## Métricas recomendadas después del despliegue
 
@@ -83,14 +118,13 @@ Decisión: incorporar “Pedir presupuesto” como CTA persistente en desktop y 
 - clics desde header;
 - clics desde servicios;
 - clics en “Ver trabajos realizados”;
+- expansión de la galería;
 - consultas que incluyen zona, tipo de trabajo y detalle;
 - relación entre visitas y conversaciones iniciadas.
 
 ## Pendientes de una siguiente iteración
 
-- revisión visual con capturas reales en 360 px, 768 px, 1280 px y 1440 px;
-- contraste y consistencia de todas las tarjetas en ambos temas;
 - curaduría de testimonios con identidad verificable;
 - evaluación de eliminar el selector de tema si distrae del objetivo comercial;
-- optimización de la galería para mostrar menos imágenes y mejores casos;
-- prueba de una variante de hero con fotografía de persona o equipo, si se dispone de material real.
+- prueba de una variante de hero con fotografía de persona o equipo, si se dispone de material real;
+- medición posdeploy de rendimiento y conversión.
