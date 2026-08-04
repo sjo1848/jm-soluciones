@@ -28,6 +28,7 @@ try {
 
     await page.goto(new URL(capture.path, baseUrl).toString(), {
       waitUntil: 'networkidle',
+      timeout: 30_000,
     });
 
     await page.evaluate(async () => {
@@ -38,12 +39,17 @@ try {
       const maxScroll = document.documentElement.scrollHeight;
       for (let position = 0; position < maxScroll; position += 600) {
         window.scrollTo(0, position);
-        await new Promise((resolve) => window.setTimeout(resolve, 80));
+        await new Promise((resolve) => window.setTimeout(resolve, 70));
       }
       window.scrollTo(0, 0);
 
-      await Promise.all(
-        Array.from(document.images).map((image) => {
+      const visibleImages = Array.from(document.images).filter((image) => {
+        const style = window.getComputedStyle(image);
+        return image.offsetParent !== null && style.visibility !== 'hidden' && style.display !== 'none';
+      });
+
+      const imageSettled = Promise.all(
+        visibleImages.map((image) => {
           if (image.complete) return Promise.resolve();
           return new Promise((resolve) => {
             image.addEventListener('load', resolve, { once: true });
@@ -51,9 +57,14 @@ try {
           });
         }),
       );
+
+      await Promise.race([
+        imageSettled,
+        new Promise((resolve) => window.setTimeout(resolve, 4_000)),
+      ]);
     });
 
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(400);
     await page.screenshot({
       path: `${outputDir}/${capture.name}`,
       fullPage: true,
