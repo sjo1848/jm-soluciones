@@ -33,3 +33,15 @@ jobs:
 
       - name: Staging smoke checks (containerized)
         run: ./scripts/ci_smoke_staging.sh
+
+      - name: Generate responsive visual snapshots
+        run: bash ./scripts/ci_visual_snapshots.sh
+
+      - name: Upload visual QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-qa-snapshots
+          path: output/visual-snapshots
+          if-no-files-found: error
+          retention-days: 14

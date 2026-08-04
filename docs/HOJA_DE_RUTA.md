@@ -79,6 +79,19 @@ Mantener una referencia unica de contexto para producto, contenido y despliegue.
 - Se incorporó `npm run test` al workflow de GitHub Actions y se habilitó CI para ramas `agent/**`.
 - Se alinearon `README.md` y `AGENTS.md` con el estado real, las variables públicas y el flujo de trabajo vigente.
 
+### 2026-08-04 — Iteración UX/UI profesional
+
+- Se registró la auditoría comercial `docs/ui-ux/AUDITORIA_COMERCIAL_V3_2026-08-04.md` con foco en percepción profesional, claridad y conversión.
+- Se simplificó el encabezado mobile eliminando la navegación duplicada y reduciendo la altura antes del contenido principal.
+- Se incorporó un CTA persistente de presupuesto en el encabezado desktop y dentro del menú mobile.
+- Se reorganizó la home según intención comercial: propuesta de valor, confianza, servicios y proceso antes de la galería.
+- Se refinó el hero con una jerarquía más clara, CTA primario a WhatsApp, CTA secundario a trabajos y una guía de consulta en tres pasos.
+- Se incorporó una capa visual más sobria y legible mediante `professional.css`, reduciendo efectos decorativos y adoptando tipografía neutral.
+- Se convirtió la galería en una selección progresiva: nueve trabajos iniciales, filtros por categoría y expansión voluntaria para evitar que domine la página.
+- Se agregó QA visual automatizado con capturas de home mobile, tablet, desktop y página de servicio, publicadas como artefacto de GitHub Actions.
+- La revisión visual final confirmó coherencia responsive y correcta presentación de hero, servicios, galería progresiva y páginas internas.
+- Validación final: Astro check sin errores, 13/13 tests, build de 13 páginas, integridad de `dist`, galería, smoke HTTP y snapshots responsive en verde.
+
 ## Pendientes priorizados
 
 1. Confirmar referencia final de direccion para produccion.
