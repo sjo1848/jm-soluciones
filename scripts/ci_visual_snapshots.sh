@@ -59,6 +59,8 @@ for snapshot in \
   home-mobile-390.png \
   home-tablet-768.png \
   home-desktop-1440.png \
+  guide-mobile-390.png \
+  guide-desktop-1440.png \
   service-desktop-1440.png; do
   test -s "$OUTPUT_DIR/$snapshot"
   echo "OK   captura generada: $snapshot"

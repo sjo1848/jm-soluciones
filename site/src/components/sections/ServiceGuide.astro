@@ -1,0 +1,544 @@
+---
+import SectionTitle from '../ui/SectionTitle.astro';
+import { serviceGuideContent } from '../../content/service-guide';
+import { buildWhatsAppUrl } from '../../utils/whatsapp';
+
+interface Props {
+  whatsappPhone: string;
+}
+
+const { whatsappPhone } = Astro.props;
+const fallbackWhatsAppUrl = buildWhatsAppUrl(
+  whatsappPhone,
+  'Hola, quiero orientacion para definir un trabajo electrico.\nZona: [barrio/ciudad]\nNecesidad: [detalle]',
+  'orientador',
+);
+---
+
+<section class="py-16 md:py-18" id="orientador">
+  <div class="container-shell">
+    <SectionTitle
+      eyebrow={serviceGuideContent.eyebrow}
+      title={serviceGuideContent.title}
+      description={serviceGuideContent.description}
+    />
+
+    <div
+      class="grid gap-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-start"
+      data-service-guide
+      data-phone={whatsappPhone}
+    >
+      <aside class="panel animate-on-scroll p-6 md:p-7" aria-label="Como funciona el orientador">
+        <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--color-brand-soft)]">
+          Consulta mas clara
+        </p>
+        <h3 class="mt-3 text-2xl font-extrabold leading-tight text-[var(--color-text)]">
+          Llega a WhatsApp con los datos principales ordenados
+        </h3>
+        <p class="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+          No pedimos datos personales ni reemplazamos el relevamiento tecnico. El objetivo es identificar el punto de partida y evitar mensajes incompletos.
+        </p>
+
+        <ol class="mt-6 space-y-4">
+          <li class="flex gap-3">
+            <span class="guide-step-number">1</span>
+            <div>
+              <p class="font-bold text-[var(--color-text)]">Selecciona la necesidad</p>
+              <p class="mt-1 text-sm text-[var(--color-text-muted)]">Obra, tablero, instalacion, falla u orientacion.</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="guide-step-number">2</span>
+            <div>
+              <p class="font-bold text-[var(--color-text)]">Indica la zona</p>
+              <p class="mt-1 text-sm text-[var(--color-text-muted)]">La cobertura final se confirma antes de coordinar.</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="guide-step-number">3</span>
+            <div>
+              <p class="font-bold text-[var(--color-text)]">Recibe una recomendacion</p>
+              <p class="mt-1 text-sm text-[var(--color-text-muted)]">Se genera un mensaje editable para WhatsApp.</p>
+            </div>
+          </li>
+        </ol>
+
+        <a
+          href={fallbackWhatsAppUrl}
+          target="_blank"
+          rel="noreferrer"
+          class="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-4 py-3 text-sm font-bold text-[var(--color-text)] transition hover:border-[var(--color-brand-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-soft)]"
+        >
+          Prefiero consultar directamente
+        </a>
+      </aside>
+
+      <div class="electric-card panel animate-on-scroll overflow-hidden p-5 md:p-7">
+        <ol class="guide-progress" aria-label="Progreso del orientador">
+          <li class="guide-progress-item" data-guide-progress="1" aria-current="step">
+            <span>1</span>
+            <strong>Necesidad</strong>
+          </li>
+          <li class="guide-progress-item" data-guide-progress="2">
+            <span>2</span>
+            <strong>Zona</strong>
+          </li>
+          <li class="guide-progress-item" data-guide-progress="3">
+            <span>3</span>
+            <strong>Estado</strong>
+          </li>
+        </ol>
+
+        <p class="sr-only" aria-live="polite" data-guide-status></p>
+
+        <div class="guide-panel mt-7" data-guide-step="1">
+          <p class="text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-brand-soft)]">Paso 1 de 3</p>
+          <h3 class="mt-2 text-2xl font-extrabold text-[var(--color-text)]" tabindex="-1" data-step-heading>
+            ¿Que necesitas resolver?
+          </h3>
+          <div class="mt-5 grid gap-3 sm:grid-cols-2" role="group" aria-label="Tipo de necesidad">
+            {serviceGuideContent.needs.map((option) => (
+              <button
+                type="button"
+                class="guide-option"
+                data-guide-option
+                data-question="need"
+                data-value={option.value}
+                data-label={option.label}
+                aria-pressed="false"
+              >
+                <strong>{option.label}</strong>
+                <span>{option.description}</span>
+              </button>
+            ))}
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button type="button" class="guide-primary-button" data-guide-next="2" disabled>
+              Continuar a zona
+            </button>
+          </div>
+        </div>
+
+        <div class="guide-panel mt-7" data-guide-step="2" hidden>
+          <p class="text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-brand-soft)]">Paso 2 de 3</p>
+          <h3 class="mt-2 text-2xl font-extrabold text-[var(--color-text)]" tabindex="-1" data-step-heading>
+            ¿En que zona se realizaria?
+          </h3>
+          <div class="mt-5 grid gap-3 sm:grid-cols-2" role="group" aria-label="Zona del trabajo">
+            {serviceGuideContent.zones.map((option) => (
+              <button
+                type="button"
+                class="guide-option"
+                data-guide-option
+                data-question="zone"
+                data-value={option.value}
+                data-label={option.label}
+                aria-pressed="false"
+              >
+                <strong>{option.label}</strong>
+                <span>{option.description}</span>
+              </button>
+            ))}
+          </div>
+          <div class="mt-6 flex flex-wrap justify-between gap-3">
+            <button type="button" class="guide-secondary-button" data-guide-back="1">Volver</button>
+            <button type="button" class="guide-primary-button" data-guide-next="3" disabled>
+              Continuar al estado
+            </button>
+          </div>
+        </div>
+
+        <div class="guide-panel mt-7" data-guide-step="3" hidden>
+          <p class="text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-brand-soft)]">Paso 3 de 3</p>
+          <h3 class="mt-2 text-2xl font-extrabold text-[var(--color-text)]" tabindex="-1" data-step-heading>
+            ¿Cual es el estado actual?
+          </h3>
+          <div class="mt-5 grid gap-3 sm:grid-cols-2" role="group" aria-label="Estado del trabajo">
+            {serviceGuideContent.stages.map((option) => (
+              <button
+                type="button"
+                class="guide-option"
+                data-guide-option
+                data-question="stage"
+                data-value={option.value}
+                data-label={option.label}
+                aria-pressed="false"
+              >
+                <strong>{option.label}</strong>
+                <span>{option.description}</span>
+              </button>
+            ))}
+          </div>
+          <div class="mt-6 flex flex-wrap justify-between gap-3">
+            <button type="button" class="guide-secondary-button" data-guide-back="2">Volver</button>
+            <button type="button" class="guide-primary-button" data-guide-finish disabled>
+              Ver recomendacion
+            </button>
+          </div>
+        </div>
+
+        <div class="guide-result mt-7" data-guide-result hidden>
+          <p class="text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-brand-soft)]">Recomendacion inicial</p>
+          <h3 class="mt-2 text-3xl font-extrabold leading-tight text-[var(--color-text)]" tabindex="-1" data-guide-result-title></h3>
+          <p class="mt-3 max-w-2xl leading-relaxed text-[var(--color-text-muted)]" data-guide-result-summary></p>
+
+          <dl class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div class="guide-result-detail">
+              <dt>Necesidad</dt>
+              <dd data-guide-selected="need"></dd>
+            </div>
+            <div class="guide-result-detail">
+              <dt>Zona</dt>
+              <dd data-guide-selected="zone"></dd>
+            </div>
+            <div class="guide-result-detail">
+              <dt>Estado</dt>
+              <dd data-guide-selected="stage"></dd>
+            </div>
+          </dl>
+
+          <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              class="electric-cta inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--color-whatsapp)] px-6 py-3 text-center text-sm font-extrabold text-white transition hover:bg-[var(--color-whatsapp-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-whatsapp)]"
+              data-guide-whatsapp
+            >
+              Enviar consulta por WhatsApp
+            </a>
+            <a
+              href="#"
+              class="electric-cta-secondary inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-6 py-3 text-center text-sm font-bold text-[var(--color-text)] transition hover:border-[var(--color-brand-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-soft)]"
+              data-guide-service-link
+            >
+              Ver alcance del servicio
+            </a>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-3 border-t border-[var(--color-border)] pt-5">
+            <button type="button" class="guide-secondary-button" data-guide-result-back>Modificar estado</button>
+            <button type="button" class="guide-secondary-button" data-guide-reset>Empezar de nuevo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import {
+    buildServiceGuideWhatsAppUrl,
+    getServiceGuideRecommendation,
+    type ServiceGuideSelection,
+  } from '../../utils/service-guide';
+
+  type GuideQuestion = keyof ServiceGuideSelection;
+
+  document.querySelectorAll<HTMLElement>('[data-service-guide]').forEach((root) => {
+    const phone = root.dataset.phone ?? '';
+    const selection: Partial<Record<GuideQuestion, string>> = {};
+    const status = root.querySelector<HTMLElement>('[data-guide-status]');
+    const result = root.querySelector<HTMLElement>('[data-guide-result]');
+
+    const getSelectedLabel = (question: GuideQuestion) => {
+      const selectedButton = root.querySelector<HTMLButtonElement>(
+        `[data-guide-option][data-question="${question}"][aria-pressed="true"]`,
+      );
+      return selectedButton?.dataset.label ?? '';
+    };
+
+    const setProgress = (step: number) => {
+      root.querySelectorAll<HTMLElement>('[data-guide-progress]').forEach((item) => {
+        const itemStep = Number(item.dataset.guideProgress);
+        if (itemStep === step) item.setAttribute('aria-current', 'step');
+        else item.removeAttribute('aria-current');
+        item.dataset.complete = itemStep < step || step === 4 ? 'true' : 'false';
+      });
+    };
+
+    const showStep = (step: number, focusHeading = true) => {
+      root.querySelectorAll<HTMLElement>('[data-guide-step]').forEach((panel) => {
+        panel.hidden = Number(panel.dataset.guideStep) !== step;
+      });
+      if (result) result.hidden = true;
+      setProgress(step);
+      if (status) status.textContent = `Paso ${step} de 3`;
+
+      if (focusHeading) {
+        const heading = root.querySelector<HTMLElement>(
+          `[data-guide-step="${step}"] [data-step-heading]`,
+        );
+        heading?.focus({ preventScroll: true });
+      }
+    };
+
+    const updateContinueButton = (question: GuideQuestion) => {
+      const target = question === 'need' ? '2' : question === 'zone' ? '3' : null;
+      const button = target
+        ? root.querySelector<HTMLButtonElement>(`[data-guide-next="${target}"]`)
+        : root.querySelector<HTMLButtonElement>('[data-guide-finish]');
+      if (button) button.disabled = !selection[question];
+    };
+
+    root.querySelectorAll<HTMLButtonElement>('[data-guide-option]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const question = button.dataset.question as GuideQuestion;
+        const value = button.dataset.value ?? '';
+        selection[question] = value;
+
+        root.querySelectorAll<HTMLButtonElement>(
+          `[data-guide-option][data-question="${question}"]`,
+        ).forEach((option) => {
+          option.setAttribute('aria-pressed', option === button ? 'true' : 'false');
+        });
+
+        updateContinueButton(question);
+        if (status) status.textContent = `${button.dataset.label ?? 'Opcion'} seleccionada`;
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-guide-next]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const nextStep = Number(button.dataset.guideNext);
+        if (nextStep) showStep(nextStep);
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-guide-back]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const previousStep = Number(button.dataset.guideBack);
+        if (previousStep) showStep(previousStep);
+      });
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-guide-finish]')?.addEventListener('click', () => {
+      if (!selection.need || !selection.zone || !selection.stage || !result) return;
+
+      const completeSelection: ServiceGuideSelection = {
+        need: selection.need as ServiceGuideSelection['need'],
+        zone: selection.zone as ServiceGuideSelection['zone'],
+        stage: selection.stage as ServiceGuideSelection['stage'],
+      };
+      const recommendation = getServiceGuideRecommendation(completeSelection.need);
+
+      root.querySelectorAll<HTMLElement>('[data-guide-step]').forEach((panel) => {
+        panel.hidden = true;
+      });
+      result.hidden = false;
+      setProgress(4);
+
+      const title = root.querySelector<HTMLElement>('[data-guide-result-title]');
+      const summary = root.querySelector<HTMLElement>('[data-guide-result-summary]');
+      const serviceLink = root.querySelector<HTMLAnchorElement>('[data-guide-service-link]');
+      const whatsappLink = root.querySelector<HTMLAnchorElement>('[data-guide-whatsapp]');
+
+      if (title) title.textContent = recommendation.title;
+      if (summary) summary.textContent = recommendation.summary;
+      if (serviceLink) serviceLink.href = `/servicios/${recommendation.slug}`;
+      if (whatsappLink) {
+        whatsappLink.href = buildServiceGuideWhatsAppUrl(phone, completeSelection);
+      }
+
+      (['need', 'zone', 'stage'] as const).forEach((question) => {
+        const output = root.querySelector<HTMLElement>(`[data-guide-selected="${question}"]`);
+        if (output) output.textContent = getSelectedLabel(question);
+      });
+
+      if (status) status.textContent = `Recomendacion: ${recommendation.title}`;
+      title?.focus({ preventScroll: true });
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-guide-result-back]')?.addEventListener('click', () => {
+      showStep(3);
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-guide-reset]')?.addEventListener('click', () => {
+      delete selection.need;
+      delete selection.zone;
+      delete selection.stage;
+      root.querySelectorAll<HTMLButtonElement>('[data-guide-option]').forEach((button) => {
+        button.setAttribute('aria-pressed', 'false');
+      });
+      root.querySelectorAll<HTMLButtonElement>('[data-guide-next], [data-guide-finish]').forEach((button) => {
+        button.disabled = true;
+      });
+      showStep(1);
+    });
+
+    showStep(1, false);
+  });
+</script>
+
+<style>
+  .guide-step-number {
+    display: inline-flex;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-soft);
+    color: var(--color-brand-soft);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .guide-progress {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .guide-progress-item {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.55rem;
+    border-bottom: 2px solid var(--color-border);
+    padding: 0 0.25rem 0.8rem;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+  }
+
+  .guide-progress-item span {
+    display: inline-flex;
+    width: 1.55rem;
+    height: 1.55rem;
+    flex: 0 0 1.55rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--color-surface-soft);
+    font-weight: 800;
+  }
+
+  .guide-progress-item strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .guide-progress-item[aria-current='step'],
+  .guide-progress-item[data-complete='true'] {
+    border-color: var(--color-brand-soft);
+    color: var(--color-text);
+  }
+
+  .guide-progress-item[aria-current='step'] span,
+  .guide-progress-item[data-complete='true'] span {
+    background: var(--color-brand-soft);
+    color: var(--color-surface);
+  }
+
+  .guide-option {
+    display: flex;
+    min-height: 6rem;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.9rem;
+    background: var(--color-surface-soft);
+    padding: 1rem;
+    text-align: left;
+    transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+  }
+
+  .guide-option strong {
+    color: var(--color-text);
+    font-size: 0.95rem;
+  }
+
+  .guide-option span {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .guide-option:hover {
+    border-color: var(--color-brand-soft);
+    transform: translateY(-1px);
+  }
+
+  .guide-option[aria-pressed='true'] {
+    border-color: var(--color-brand-soft);
+    background: color-mix(in srgb, var(--color-brand-soft) 10%, var(--color-surface));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-brand-soft) 24%, transparent);
+  }
+
+  .guide-option:focus-visible,
+  .guide-primary-button:focus-visible,
+  .guide-secondary-button:focus-visible {
+    outline: 2px solid var(--color-brand-soft);
+    outline-offset: 3px;
+  }
+
+  .guide-primary-button,
+  .guide-secondary-button {
+    min-height: 2.75rem;
+    border-radius: 0.75rem;
+    padding: 0.7rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 800;
+    transition: opacity 160ms ease, border-color 160ms ease, background-color 160ms ease;
+  }
+
+  .guide-primary-button {
+    background: var(--color-brand-soft);
+    color: var(--color-surface);
+  }
+
+  .guide-primary-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+  }
+
+  .guide-secondary-button {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+  }
+
+  .guide-secondary-button:hover {
+    border-color: var(--color-brand-soft);
+  }
+
+  .guide-result-detail {
+    border: 1px solid var(--color-border);
+    border-radius: 0.85rem;
+    background: var(--color-surface-soft);
+    padding: 0.85rem;
+  }
+
+  .guide-result-detail dt {
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .guide-result-detail dd {
+    margin-top: 0.35rem;
+    color: var(--color-text);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .guide-option,
+    .guide-primary-button,
+    .guide-secondary-button {
+      transition: none;
+    }
+
+    .guide-option:hover {
+      transform: none;
+    }
+  }
+</style>

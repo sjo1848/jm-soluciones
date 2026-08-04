@@ -30,8 +30,17 @@ describe('buildWhatsAppUrl', () => {
     expect(url).toBe('https://wa.me/5492613465718?text=Hola');
   });
 
-  it('soporta todos los orígenes definidos', () => {
-    const sources: WhatsAppSource[] = ['hero', 'servicios', 'servicio-detalle', 'final', 'flotante', '404', 'zona'];
+  it('soporta todos los origenes definidos', () => {
+    const sources: WhatsAppSource[] = [
+      'hero',
+      'servicios',
+      'servicio-detalle',
+      'orientador',
+      'final',
+      'flotante',
+      '404',
+      'zona',
+    ];
     for (const source of sources) {
       const url = buildWhatsAppUrl('5492613465718', 'Hola', source);
       expect(url).toContain(`Origen%20web%3A%20${source}`);

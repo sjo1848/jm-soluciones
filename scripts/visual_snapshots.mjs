@@ -8,11 +8,37 @@ const captures = [
   { name: 'home-tablet-768.png', path: '/', viewport: { width: 768, height: 1024 } },
   { name: 'home-desktop-1440.png', path: '/', viewport: { width: 1440, height: 1000 } },
   {
+    name: 'guide-mobile-390.png',
+    path: '/',
+    viewport: { width: 390, height: 844 },
+    prepare: 'guide-result',
+    target: '[data-service-guide]',
+  },
+  {
+    name: 'guide-desktop-1440.png',
+    path: '/',
+    viewport: { width: 1440, height: 1000 },
+    prepare: 'guide-result',
+    target: '[data-service-guide]',
+  },
+  {
     name: 'service-desktop-1440.png',
     path: '/servicios/electricidad-para-obras-y-refacciones-mendoza/',
     viewport: { width: 1440, height: 1000 },
   },
 ];
+
+const completeServiceGuide = async (page) => {
+  const guide = page.locator('[data-service-guide]');
+  await guide.scrollIntoViewIfNeeded();
+  await guide.locator('[data-question="need"][data-value="obras"]').click();
+  await guide.locator('[data-guide-next="2"]').click();
+  await guide.locator('[data-question="zone"][data-value="godoy-cruz"]').click();
+  await guide.locator('[data-guide-next="3"]').click();
+  await guide.locator('[data-question="stage"][data-value="en-ejecucion"]').click();
+  await guide.locator('[data-guide-finish]').click();
+  await guide.locator('[data-guide-result]').waitFor({ state: 'visible' });
+};
 
 const browser = await chromium.launch({ headless: true });
 
@@ -64,11 +90,22 @@ try {
       ]);
     });
 
+    if (capture.prepare === 'guide-result') {
+      await completeServiceGuide(page);
+    }
+
     await page.waitForTimeout(400);
-    await page.screenshot({
-      path: `${outputDir}/${capture.name}`,
-      fullPage: true,
-    });
+
+    if (capture.target) {
+      await page.locator(capture.target).screenshot({
+        path: `${outputDir}/${capture.name}`,
+      });
+    } else {
+      await page.screenshot({
+        path: `${outputDir}/${capture.name}`,
+        fullPage: true,
+      });
+    }
 
     await context.close();
   }

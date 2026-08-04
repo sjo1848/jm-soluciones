@@ -2,6 +2,7 @@ export type WhatsAppSource =
   | 'hero'
   | 'servicios'
   | 'servicio-detalle'
+  | 'orientador'
   | 'final'
   | 'flotante'
   | '404'
@@ -12,6 +13,7 @@ const sourceLabelMap: Record<WhatsAppSource, string> = {
   hero: 'hero',
   servicios: 'servicios',
   'servicio-detalle': 'servicio-detalle',
+  orientador: 'orientador',
   final: 'final',
   flotante: 'flotante',
   '404': '404',
