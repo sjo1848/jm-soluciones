@@ -73,12 +73,18 @@ Mantener una referencia unica de contexto para producto, contenido y despliegue.
 - Se alineó el origen `zona` en el sistema de métricas: valores permitidos en `docs/operacion/metricas/README.md` y conteo en `scripts/generate_weekly_metrics.sh`.
 - Se incorporó Vitest como framework de tests unitarios (`site/vitest.config.mts`) con script `npm run test`.
 - Se agregaron 13 tests unitarios para `whatsapp.ts` (construcción de URL, limpieza de teléfono, orígenes) y `seo.ts` (schemas de servicio, landing y zona). Validación: `check` sin errores, tests 13/13, build 13 páginas.
+- Se abrió el issue `#1` para consolidar el baseline de QA, CI y release mediante un flujo trazable de issue, rama y pull request.
+- Se unificó el núcleo del quality gate en `npm run release:preflight`, que ahora ejecuta `check`, `test` y `build`.
+- Se corrigieron `make check` y `scripts/preflight_release.sh` para instalar dependencias con `npm ci` dentro de contenedores limpios.
+- Se incorporó `npm run test` al workflow de GitHub Actions y se habilitó CI para ramas `agent/**`.
+- Se alinearon `README.md` y `AGENTS.md` con el estado real, las variables públicas y el flujo de trabajo vigente.
 
 ## Pendientes priorizados
 
 1. Confirmar referencia final de direccion para produccion.
 2. Definir dominio final y setear `PUBLIC_SITE_URL` productivo.
 3. Ejecutar preflight final y registrar evidencia de release con esos datos definitivos.
+4. Publicar el sitio y ejecutar una validación posdeploy de SEO, rendimiento y conversión.
 
 ## Regla de continuidad
 
@@ -91,10 +97,13 @@ Mantener una referencia unica de contexto para producto, contenido y despliegue.
 
 ## Checklist rapido por iteracion
 
-1. Actualizar contenido/estilos.
-2. Ejecutar `npm run check` y `npm run build` en contenedor.
+1. Actualizar contenido, lógica o estilos.
+2. Ejecutar `npm ci` y `npm run release:preflight` en contenedor.
 3. Verificar `check_dist_integrity.sh`.
-4. Registrar resultado en esta hoja.
+4. Verificar `check_gallery_assets.sh`.
+5. Ejecutar smoke HTTP cuando el cambio afecte salida o despliegue.
+6. Registrar el resultado en esta hoja.
+7. Integrar mediante pull request con CI en verde.
 
 ## Traspaso a nuevo chat (2026-03-05)
 
