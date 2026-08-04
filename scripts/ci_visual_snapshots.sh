@@ -51,7 +51,8 @@ docker run --rm \
     cd /tmp/visual-qa &&
     npm init -y >/dev/null 2>&1 &&
     npm install --no-audit --no-fund --silent playwright@${PLAYWRIGHT_VERSION} &&
-    node /workspace/scripts/visual_snapshots.mjs
+    cp /workspace/scripts/visual_snapshots.mjs /tmp/visual-qa/visual_snapshots.mjs &&
+    node /tmp/visual-qa/visual_snapshots.mjs
   "
 
 for snapshot in \
