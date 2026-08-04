@@ -39,3 +39,4 @@ Ayudar al visitante a identificar un servicio inicial y generar una consulta de 
 - La rama genera vista previa, no produccion.
 - `main` no se modifica durante la implementacion.
 - El merge queda bloqueado hasta revisar CI, artefactos visuales y preview de Cloudflare.
+- El 2026-08-04 se solicito un nuevo despliegue de vista previa mediante un commit documental en la rama para que Cloudflare vuelva a detectar el proyecto sin publicar cambios en produccion.
