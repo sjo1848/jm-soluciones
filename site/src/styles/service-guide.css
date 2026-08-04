@@ -1,0 +1,9 @@
+@media (max-width: 1023px) {
+  [data-service-guide] > aside {
+    order: 2;
+  }
+
+  [data-service-guide] > .electric-card {
+    order: 1;
+  }
+}

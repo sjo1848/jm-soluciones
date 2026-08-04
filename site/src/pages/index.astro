@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/service-guide.css';
 import Header from '../components/sections/Header.astro';
 import Hero from '../components/sections/Hero.astro';
 import TrustBar from '../components/sections/TrustBar.astro';
+import ServiceGuide from '../components/sections/ServiceGuide.astro';
 import Services from '../components/sections/Services.astro';
 import ProcessFlow from '../components/sections/ProcessFlow.astro';
 import TechnicalScope from '../components/sections/TechnicalScope.astro';
@@ -104,6 +106,7 @@ const schema = buildLandingPageSchema(landingContent, new URL(canonical), whatsa
     points={landingContent.trustPoints}
     metrics={landingContent.proofMetrics}
   />
+  <ServiceGuide whatsappPhone={landingContent.contact.whatsapp} />
   <Services
     services={landingContent.servicesDetails}
     whatsappPhone={landingContent.contact.whatsapp}
