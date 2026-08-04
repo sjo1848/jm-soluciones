@@ -10,7 +10,7 @@
     "astro": "astro",
     "check": "astro check",
     "test": "vitest run",
-    "release:preflight": "npm run check && npm run build"
+    "release:preflight": "npm run check && npm run test && npm run build"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",
