@@ -9,15 +9,16 @@ interface Props {
 }
 
 const { categories } = Astro.props;
-// Reactivar cuando el perfil tenga contenido publicado nuevamente.
-// const { categories, instagramUrl = '' } = Astro.props;
+const initialAllLimit = 9;
+const initialCategoryLimit = 6;
 
 const galleryEntries = categories.flatMap((category) =>
-  category.images.map((image) => ({
+  category.images.map((image, categoryIndex) => ({
     ...image,
     categoryId: category.id,
     categoryTitle: category.title,
-  }))
+    categoryIndex,
+  })),
 );
 
 const localImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/gallery/**/*.{jpeg,jpg,png,gif,webp}', { eager: true });
@@ -35,20 +36,20 @@ const isRemoteImage = (srcPath: string) => /^https?:\/\//.test(srcPath);
 <section class="py-16 md:py-18" id="trabajos">
   <div class="container-shell">
     <SectionTitle
-      eyebrow="Trabajos"
-      title="Trabajos reales por tipo de instalacion"
-      description="Ordenamos los registros por rubro para que puedas ver rapido el tipo de obra que resolvemos."
+      eyebrow="Trabajos reales"
+      title="Una selección de instalaciones realizadas"
+      description="Mostramos primero los trabajos más representativos. Podés filtrar por tipo de instalación o ampliar la galería cuando necesites más detalle."
     />
 
-    <div class="gallery-filter-shell mb-8 rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-surface)]/85 p-4 shadow-sm md:mb-10 md:p-5">
-      <div class="flex flex-wrap gap-2.5">
+    <div class="gallery-filter-shell mb-8 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)]/88 p-4 shadow-sm md:mb-10 md:p-5">
+      <div class="flex flex-wrap gap-2.5" aria-label="Filtrar trabajos por categoría">
         <button
           type="button"
           class="js-gallery-filter gallery-filter is-active"
           data-gallery-filter="all"
           aria-pressed="true"
         >
-          <span>Todos los trabajos</span>
+          <span>Selección general</span>
           <span class="gallery-filter-count">{galleryEntries.length}</span>
         </button>
         {categories.map((category) => (
@@ -64,26 +65,26 @@ const isRemoteImage = (srcPath: string) => /^https?:\/\//.test(srcPath);
         ))}
       </div>
 
-      <div class="mt-4 md:mt-5">
-        <div class="gallery-summary-panel js-gallery-summary" data-gallery-summary="all">
-          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-brand-soft)]">Galeria curada</p>
-          <h3 class="mt-2 text-2xl font-extrabold text-[var(--color-text)]">Trabajos separados por tipo de instalacion</h3>
+      <div class="mt-4 border-t border-[var(--color-border)] pt-4 md:mt-5 md:pt-5">
+        <div class="js-gallery-summary" data-gallery-summary="all">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-brand-soft)]">Vista general</p>
+          <h3 class="mt-2 text-xl font-extrabold text-[var(--color-text)] md:text-2xl">Obras, refacciones, tableros e iluminación</h3>
           <p class="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-            Dejamos atras la galeria mezclada y repetida. Ahora el material se muestra por rubro para que el recorrido sea mas claro y profesional.
+            Una muestra breve para comprobar el tipo de terminación, escala y variedad de trabajos.
           </p>
         </div>
 
         {categories.map((category) => (
-          <div class="gallery-summary-panel js-gallery-summary" data-gallery-summary={category.id} hidden>
-            <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-brand-soft)]">Categoria activa</p>
-            <h3 class="mt-2 text-2xl font-extrabold text-[var(--color-text)]">{category.title}</h3>
+          <div class="js-gallery-summary" data-gallery-summary={category.id} hidden>
+            <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-brand-soft)]">Categoría seleccionada</p>
+            <h3 class="mt-2 text-xl font-extrabold text-[var(--color-text)] md:text-2xl">{category.title}</h3>
             <p class="mt-2 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">{category.description}</p>
           </div>
         ))}
       </div>
     </div>
 
-    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3" id="gallery-grid">
       {galleryEntries.map((image, index) => {
         const metadata = getImageMetadata(image.src);
 
@@ -91,6 +92,9 @@ const isRemoteImage = (srcPath: string) => /^https?:\/\//.test(srcPath);
           <figure
             class="js-gallery-card electric-card overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm"
             data-gallery-item={image.categoryId}
+            data-gallery-all-index={index}
+            data-gallery-category-index={image.categoryIndex}
+            hidden={index >= initialAllLimit}
           >
             <button
               type="button"
@@ -141,7 +145,21 @@ const isRemoteImage = (srcPath: string) => /^https?:\/\//.test(srcPath);
       })}
     </div>
 
-    {/* Reactivar bloque de Instagram cuando haya contenido publicado y estrategia social activa. */}
+    <div class="mt-8 flex justify-center">
+      <button
+        id="gallery-toggle"
+        type="button"
+        data-expanded="false"
+        data-all-limit={initialAllLimit}
+        data-category-limit={initialCategoryLimit}
+        class="electric-cta-secondary inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-3 text-sm font-extrabold text-[var(--color-text)] transition hover:border-[var(--color-brand-soft)]"
+        aria-controls="gallery-grid"
+        aria-expanded="false"
+      >
+        <span data-gallery-toggle-label>Ver más trabajos</span>
+        <svg data-gallery-toggle-icon xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -152,7 +170,7 @@ const isRemoteImage = (srcPath: string) => /^https?:\/\//.test(srcPath);
       id={`lightbox-${index}`}
       class="js-lightbox-dialog m-auto max-h-[95vh] max-w-[95vw] border-0 bg-transparent p-0 outline-none"
     >
-      <div class="js-lightbox-panel relative flex h-full w-full flex-col items-center justify-center p-4">
+      <div class="relative flex h-full w-full flex-col items-center justify-center p-4">
         <button
           type="button"
           data-lightbox-close={`lightbox-${index}`}
@@ -165,27 +183,13 @@ const isRemoteImage = (srcPath: string) => /^https?:\/\//.test(srcPath);
         </button>
 
         {isRemoteImage(image.src) ? (
-          <img
-            src={image.src}
-            alt={image.alt}
-            referrerpolicy="no-referrer"
-            class="js-lightbox-media max-h-[85vh] w-auto max-w-full rounded-[1.25rem] border border-white/15 object-contain"
-          />
+          <img src={image.src} alt={image.alt} referrerpolicy="no-referrer" class="max-h-[85vh] w-auto max-w-full rounded-[1.25rem] border border-white/15 object-contain" />
         ) : metadata ? (
-          <Image
-            src={metadata}
-            alt={image.alt}
-            width={1200}
-            class="js-lightbox-media max-h-[85vh] w-auto max-w-full rounded-[1.25rem] border border-white/15 object-contain"
-          />
+          <Image src={metadata} alt={image.alt} width={1200} class="max-h-[85vh] w-auto max-w-full rounded-[1.25rem] border border-white/15 object-contain" />
         ) : (
-          <img
-            src="/images/placeholder-work.svg"
-            alt={image.alt}
-            class="js-lightbox-media max-h-[85vh] w-auto max-w-full rounded-[1.25rem] border border-white/15 object-contain"
-          />
+          <img src="/images/placeholder-work.svg" alt={image.alt} class="max-h-[85vh] w-auto max-w-full rounded-[1.25rem] border border-white/15 object-contain" />
         )}
-        <p class="js-lightbox-caption mt-4 max-w-2xl px-4 text-center text-sm font-medium text-white md:text-base">{image.alt}</p>
+        <p class="mt-4 max-w-2xl px-4 text-center text-sm font-medium text-white md:text-base">{image.alt}</p>
       </div>
     </dialog>
   );
@@ -193,117 +197,125 @@ const isRemoteImage = (srcPath: string) => /^https?:\/\//.test(srcPath);
 
 <script is:inline>
   (() => {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const galleryFilterButtons = Array.from(document.querySelectorAll('.js-gallery-filter'));
-  const galleryCards = Array.from(document.querySelectorAll('.js-gallery-card'));
-  const gallerySummaries = Array.from(document.querySelectorAll('.js-gallery-summary'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const filterButtons = Array.from(document.querySelectorAll('.js-gallery-filter'));
+    const cards = Array.from(document.querySelectorAll('.js-gallery-card'));
+    const summaries = Array.from(document.querySelectorAll('.js-gallery-summary'));
+    const toggleButton = document.getElementById('gallery-toggle');
+    const toggleLabel = toggleButton?.querySelector('[data-gallery-toggle-label]');
+    const toggleIcon = toggleButton?.querySelector('[data-gallery-toggle-icon]');
+    let activeFilter = 'all';
+    let expanded = false;
 
-  const setGalleryFilter = (filterId) => {
-    galleryFilterButtons.forEach((button) => {
-      if (!(button instanceof HTMLElement)) return;
-      const isActive = button.dataset.galleryFilter === filterId;
-      button.classList.toggle('is-active', isActive);
-      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-    });
+    const getLimit = () => {
+      if (!(toggleButton instanceof HTMLElement)) return 9;
+      const raw = activeFilter === 'all' ? toggleButton.dataset.allLimit : toggleButton.dataset.categoryLimit;
+      return Number(raw ?? 9);
+    };
 
-    galleryCards.forEach((card) => {
-      if (!(card instanceof HTMLElement)) return;
-      const categoryId = card.dataset.galleryItem;
-      const isVisible = filterId === 'all' || categoryId === filterId;
-      card.hidden = !isVisible;
-    });
+    const applyGalleryState = () => {
+      const limit = getLimit();
+      const matchingCards = cards.filter((card) =>
+        card instanceof HTMLElement && (activeFilter === 'all' || card.dataset.galleryItem === activeFilter)
+      );
 
-    gallerySummaries.forEach((summary) => {
-      if (!(summary instanceof HTMLElement)) return;
-      summary.hidden = summary.dataset.gallerySummary !== filterId;
-    });
-  };
+      cards.forEach((card) => {
+        if (!(card instanceof HTMLElement)) return;
+        const matchesFilter = activeFilter === 'all' || card.dataset.galleryItem === activeFilter;
+        const rawIndex = activeFilter === 'all' ? card.dataset.galleryAllIndex : card.dataset.galleryCategoryIndex;
+        const itemIndex = Number(rawIndex ?? 0);
+        card.hidden = !matchesFilter || (!expanded && itemIndex >= limit);
+      });
 
-  const openDialogWithAnimation = (dialog) => {
-    if (!(dialog instanceof HTMLDialogElement)) return;
-    if (!dialog.open) {
-      dialog.showModal();
-    }
-    if (prefersReducedMotion) {
-      dialog.classList.add('is-visible');
-      return;
-    }
-    requestAnimationFrame(() => {
-      dialog.classList.add('is-visible');
-    });
-  };
+      filterButtons.forEach((button) => {
+        if (!(button instanceof HTMLElement)) return;
+        const isActive = button.dataset.galleryFilter === activeFilter;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
 
-  const closeDialogWithAnimation = (dialog) => {
-    if (!(dialog instanceof HTMLDialogElement)) return;
-    if (prefersReducedMotion) {
-      dialog.close();
-      dialog.classList.remove('is-visible');
-      return;
-    }
+      summaries.forEach((summary) => {
+        if (!(summary instanceof HTMLElement)) return;
+        summary.hidden = summary.dataset.gallerySummary !== activeFilter;
+      });
 
-    dialog.classList.remove('is-visible');
-    window.setTimeout(() => {
-      if (dialog.open) dialog.close();
-    }, 180);
-  };
-
-  document.querySelectorAll('.js-gallery-image').forEach((image) => {
-    image.addEventListener('error', () => {
-      const fallback = image.getAttribute('data-fallback-src');
-      if (fallback && image.getAttribute('src') !== fallback) {
-        image.setAttribute('src', fallback);
+      if (toggleButton instanceof HTMLButtonElement) {
+        const canExpand = matchingCards.length > limit;
+        toggleButton.hidden = !canExpand;
+        toggleButton.dataset.expanded = expanded ? 'true' : 'false';
+        toggleButton.setAttribute('aria-expanded', expanded ? 'true' : 'false');
       }
-    });
-  });
+      if (toggleLabel) toggleLabel.textContent = expanded ? 'Mostrar menos' : 'Ver más trabajos';
+      toggleIcon?.classList.toggle('rotate-180', expanded);
+    };
 
-  document.querySelectorAll('.js-lightbox-dialog').forEach((dialog) => {
-    dialog.addEventListener('click', (ev) => {
-      if (ev.target === dialog) {
-        closeDialogWithAnimation(dialog);
-      }
-    });
-
-    dialog.addEventListener('cancel', (ev) => {
-      ev.preventDefault();
-      closeDialogWithAnimation(dialog);
-    });
-
-    dialog.addEventListener('close', () => {
+    const closeDialog = (dialog) => {
+      if (!(dialog instanceof HTMLDialogElement)) return;
       dialog.classList.remove('is-visible');
+      if (prefersReducedMotion) {
+        dialog.close();
+      } else {
+        window.setTimeout(() => dialog.open && dialog.close(), 180);
+      }
+    };
+
+    document.querySelectorAll('.js-gallery-image').forEach((image) => {
+      image.addEventListener('error', () => {
+        const fallback = image.getAttribute('data-fallback-src');
+        if (fallback && image.getAttribute('src') !== fallback) image.setAttribute('src', fallback);
+      });
     });
-  });
 
-  document.querySelectorAll('[data-lightbox-open]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const dialogId = button instanceof HTMLElement ? button.dataset.lightboxOpen : null;
-      const dialog = dialogId ? document.getElementById(dialogId) : null;
-      openDialogWithAnimation(dialog);
+    document.querySelectorAll('.js-lightbox-dialog').forEach((dialog) => {
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) closeDialog(dialog);
+      });
+      dialog.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeDialog(dialog);
+      });
+      dialog.addEventListener('close', () => dialog.classList.remove('is-visible'));
     });
-  });
 
-  document.querySelectorAll('[data-lightbox-close]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const dialogId = button instanceof HTMLElement ? button.dataset.lightboxClose : null;
-      const dialog = dialogId ? document.getElementById(dialogId) : null;
-      closeDialogWithAnimation(dialog);
+    document.querySelectorAll('[data-lightbox-open]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const dialogId = button instanceof HTMLElement ? button.dataset.lightboxOpen : null;
+        const dialog = dialogId ? document.getElementById(dialogId) : null;
+        if (!(dialog instanceof HTMLDialogElement)) return;
+        dialog.showModal();
+        if (prefersReducedMotion) dialog.classList.add('is-visible');
+        else requestAnimationFrame(() => dialog.classList.add('is-visible'));
+      });
     });
-  });
 
-  galleryFilterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      if (!(button instanceof HTMLElement)) return;
-      const filterId = button.dataset.galleryFilter ?? 'all';
-      setGalleryFilter(filterId);
+    document.querySelectorAll('[data-lightbox-close]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const dialogId = button instanceof HTMLElement ? button.dataset.lightboxClose : null;
+        closeDialog(dialogId ? document.getElementById(dialogId) : null);
+      });
     });
-  });
 
-  const requestedFilter = new URLSearchParams(window.location.search).get('gallery');
-  const availableFilters = new Set(
-    galleryFilterButtons
-      .map((button) => (button instanceof HTMLElement ? button.dataset.galleryFilter ?? '' : ''))
-      .filter(Boolean)
-  );
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!(button instanceof HTMLElement)) return;
+        activeFilter = button.dataset.galleryFilter ?? 'all';
+        expanded = false;
+        applyGalleryState();
+      });
+    });
 
-  setGalleryFilter(requestedFilter && availableFilters.has(requestedFilter) ? requestedFilter : 'all');
+    toggleButton?.addEventListener('click', () => {
+      expanded = !expanded;
+      applyGalleryState();
+    });
+
+    const requestedFilter = new URLSearchParams(window.location.search).get('gallery');
+    const availableFilters = new Set(
+      filterButtons
+        .map((button) => (button instanceof HTMLElement ? button.dataset.galleryFilter ?? '' : ''))
+        .filter(Boolean),
+    );
+    activeFilter = requestedFilter && availableFilters.has(requestedFilter) ? requestedFilter : 'all';
+    applyGalleryState();
   })();
 </script>
