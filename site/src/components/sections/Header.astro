@@ -1,12 +1,18 @@
 ---
 import '../../styles/professional.css';
+import { buildWhatsAppUrl } from '../../utils/whatsapp';
 
 interface Props {
   brandName: string;
-  whatsappUrl: string;
+  whatsappUrl?: string;
 }
 
-const { brandName, whatsappUrl } = Astro.props;
+const fallbackWhatsappUrl = buildWhatsAppUrl(
+  import.meta.env.PUBLIC_WHATSAPP ?? '5492613465718',
+  import.meta.env.PUBLIC_WHATSAPP_MESSAGE ??
+    'Hola, __JM_SALUDO__ quiero pedir presupuesto por una obra, refaccion o trabajo electrico.\nZona: [barrio/ciudad]\nTipo de trabajo: [obra/refaccion/instalacion]\nDetalle: [detalle]',
+);
+const { brandName, whatsappUrl = fallbackWhatsappUrl } = Astro.props;
 
 const navLinks = [
   { href: '/#servicios', label: 'Servicios' },
