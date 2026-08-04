@@ -1,35 +1,38 @@
 ---
+import '../../styles/professional.css';
+
 interface Props {
   brandName: string;
+  whatsappUrl: string;
 }
 
-const { brandName } = Astro.props;
+const { brandName, whatsappUrl } = Astro.props;
 
 const navLinks = [
-  { href: '/#trabajos', label: 'Trabajos' },
   { href: '/#servicios', label: 'Servicios' },
-  { href: '/#credenciales', label: 'Credenciales' },
+  { href: '/#proceso', label: 'Cómo trabajamos' },
+  { href: '/#trabajos', label: 'Trabajos' },
   { href: '/#cobertura', label: 'Cobertura' },
-  { href: '/#faq', label: 'FAQ' },
+  { href: '/#faq', label: 'Preguntas' },
 ];
 ---
 
 <header
   data-site-header
-  class="site-header fixed top-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-bg)]/94 backdrop-blur"
+  class="site-header fixed top-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-bg)]/94 backdrop-blur-xl"
 >
   <span class="electric-strip"></span>
-  <div class="site-header-inner container-shell flex items-center justify-between gap-3 py-3">
-    <a href="/" class="group inline-flex min-h-10 min-w-0 flex-col justify-center py-1">
-      <p class="electric-brand-name truncate text-xl font-black uppercase tracking-[0.08em] leading-none text-[var(--color-text)] transition-colors group-hover:text-[var(--color-brand-soft)] md:text-3xl">
+  <div class="site-header-inner container-shell flex items-center justify-between gap-4 py-2.5">
+    <a href="/" class="group inline-flex min-w-0 flex-col justify-center py-1" aria-label={`${brandName}, inicio`}>
+      <p class="truncate text-lg font-extrabold uppercase leading-none tracking-[0.04em] text-[var(--color-text)] transition-colors group-hover:text-[var(--color-brand-soft)] md:text-xl">
         {brandName}
       </p>
-      <p class="hidden text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--color-text-muted)] md:block">
+      <p class="mt-1 hidden text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--color-text-muted)] sm:block">
         Obras, refacciones e instalaciones
       </p>
     </a>
 
-    <nav class="hidden items-center gap-5 text-sm font-semibold text-[var(--color-text-muted)] md:flex">
+    <nav class="hidden items-center gap-5 text-sm font-semibold text-[var(--color-text-muted)] lg:flex" aria-label="Navegación principal">
       {navLinks.map((link) => (
         <a href={link.href} class="electric-link transition-colors hover:text-[var(--color-brand-soft)]">{link.label}</a>
       ))}
@@ -39,7 +42,7 @@ const navLinks = [
       <button
         type="button"
         data-theme-toggle
-        class="theme-toggle inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[var(--color-text)] transition-colors hover:border-[var(--color-brand-soft)] hover:text-[var(--color-brand-soft)]"
+        class="theme-toggle inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] transition-colors hover:border-[var(--color-brand-soft)] hover:text-[var(--color-brand-soft)]"
         aria-label="Cambiar tema"
         title="Cambiar tema"
       >
@@ -49,8 +52,15 @@ const navLinks = [
         <svg data-theme-icon="moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="hidden size-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 1 0 21.752 15.002Z" />
         </svg>
-        <span class="text-xs font-bold uppercase tracking-[0.08em]">Tema</span>
       </button>
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        class="electric-cta inline-flex min-h-10 items-center justify-center rounded-lg bg-[var(--color-whatsapp)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--color-whatsapp-hover)]"
+      >
+        Pedir presupuesto
+      </a>
     </div>
 
     <div class="flex items-center gap-2 md:hidden">
@@ -74,7 +84,7 @@ const navLinks = [
         class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]"
         aria-controls="mobile-drawer"
         aria-expanded="false"
-        aria-label="Abrir menu"
+        aria-label="Abrir menú"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5m-16.5 5.25h16.5m-16.5 5.25h16.5" />
@@ -82,34 +92,24 @@ const navLinks = [
       </button>
     </div>
   </div>
-
-  <nav class="mobile-top-links border-t border-[var(--color-border)]/70 md:hidden" aria-label="Accesos rapidos">
-    <div class="container-shell flex flex-wrap items-center justify-center gap-2 py-2">
-      {navLinks.map((link) => (
-        <a
-          href={link.href}
-          class="inline-flex min-h-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/88 px-3 py-1.5 text-xs font-bold text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-brand-soft)] hover:text-[var(--color-brand-soft)]"
-        >
-          {link.label}
-        </a>
-      ))}
-    </div>
-  </nav>
 </header>
 
 <div id="mobile-drawer" class="pointer-events-none fixed inset-0 z-[60] hidden md:hidden">
-  <button id="mobile-drawer-backdrop" class="absolute inset-0 bg-black/45 opacity-0 transition-opacity" aria-label="Cerrar menu"></button>
-  <aside id="mobile-drawer-panel" role="dialog" aria-modal="true" aria-label="Menu de navegacion" class="electric-card absolute right-0 top-0 h-full w-[86%] max-w-sm translate-x-full border-l border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-2xl transition-transform duration-300">
+  <button id="mobile-drawer-backdrop" class="absolute inset-0 bg-black/55 opacity-0 transition-opacity" aria-label="Cerrar menú"></button>
+  <aside id="mobile-drawer-panel" role="dialog" aria-modal="true" aria-label="Menú de navegación" class="electric-card absolute right-0 top-0 h-full w-[86%] max-w-sm translate-x-full border-l border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-2xl transition-transform duration-300">
     <div class="flex items-center justify-between gap-3 border-b border-[var(--color-border)] pb-4">
-      <p class="text-sm font-extrabold uppercase tracking-[0.12em] text-[var(--color-text)]">Menu</p>
-      <button id="mobile-menu-close" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text)]" aria-label="Cerrar menu">
+      <div>
+        <p class="text-sm font-extrabold uppercase tracking-[0.08em] text-[var(--color-text)]">{brandName}</p>
+        <p class="mt-1 text-xs text-[var(--color-text-muted)]">Electricidad para obras y refacciones</p>
+      </div>
+      <button id="mobile-menu-close" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text)]" aria-label="Cerrar menú">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
 
-    <nav class="mt-4 grid gap-1" aria-label="Navegacion principal mobile">
+    <nav class="mt-4 grid gap-1" aria-label="Navegación principal mobile">
       {navLinks.map((link) => (
         <a href={link.href} class="js-drawer-link rounded-lg px-3 py-3 text-sm font-bold text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface-soft)]">
           {link.label}
@@ -117,7 +117,15 @@ const navLinks = [
       ))}
     </nav>
 
-    <div class="mt-5 grid gap-2 border-t border-[var(--color-border)] pt-4">
+    <div class="mt-5 grid gap-3 border-t border-[var(--color-border)] pt-5">
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        class="electric-cta inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--color-whatsapp)] px-4 py-3 text-sm font-bold text-white"
+      >
+        Pedir presupuesto por WhatsApp
+      </a>
       <button
         type="button"
         data-theme-toggle
@@ -166,8 +174,7 @@ const navLinks = [
       backdrop.classList.remove('opacity-0');
     });
     openBtn.setAttribute('aria-expanded', 'true');
-    const firstFocusable = panel.querySelector<HTMLElement>(focusableSelector);
-    firstFocusable?.focus();
+    panel.querySelector<HTMLElement>(focusableSelector)?.focus();
   };
 
   const closeDrawer = () => {
@@ -176,9 +183,7 @@ const navLinks = [
     backdrop.classList.add('opacity-0');
     openBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    setTimeout(() => {
-      drawer.classList.add('hidden', 'pointer-events-none');
-    }, 260);
+    setTimeout(() => drawer.classList.add('hidden', 'pointer-events-none'), 260);
     lastFocusedElement?.focus();
   };
 
@@ -200,10 +205,7 @@ const navLinks = [
     if (event.shiftKey && document.activeElement === firstElement) {
       event.preventDefault();
       lastElement.focus();
-      return;
-    }
-
-    if (!event.shiftKey && document.activeElement === lastElement) {
+    } else if (!event.shiftKey && document.activeElement === lastElement) {
       event.preventDefault();
       firstElement.focus();
     }
@@ -220,7 +222,6 @@ const navLinks = [
   };
 
   syncHeaderState();
-  updateHeaderOffset();
   window.addEventListener('scroll', syncHeaderState, { passive: true });
   window.addEventListener('resize', updateHeaderOffset);
   window.addEventListener('load', updateHeaderOffset);
