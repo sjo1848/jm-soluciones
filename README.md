@@ -1,30 +1,51 @@
-# jm-soluciones
+# JM Soluciones Eléctricas
 
-Implementacion frontend en Astro con ejecucion 100% en contenedores.
+Landing comercial orientada a obras, ampliaciones, refacciones e instalaciones eléctricas en Gran Mendoza.
 
-Estado actual recomendado: desarrollo interno (sin despliegue a QA/produccion).
+## Estado actual
+
+El producto se encuentra técnicamente preparado para una validación final de release:
+
+- UI/UX y contenido comercial consolidados.
+- Galería con fotografías reales organizadas por tipología.
+- SEO local con páginas por zona y datos estructurados JSON-LD.
+- Atribución de consultas mediante enlaces de WhatsApp.
+- Tests unitarios con Vitest.
+- Quality gate automatizado en GitHub Actions.
+- Build estático servido con Nginx para staging.
+
+El despliegue productivo continúa pendiente hasta confirmar:
+
+1. Dominio final y `PUBLIC_SITE_URL`.
+2. Referencia o dirección comercial definitiva.
+3. Ejecución del preflight con los datos productivos.
 
 ## Stack
 
 - Astro 5
 - Tailwind CSS 4
 - TypeScript
+- Vitest
 - Docker Compose
-- Nginx (staging)
+- Nginx
+- GitHub Actions
 
 ## Requisitos
 
 - Docker
 - Docker Compose plugin
-- Puertos `4321` (dev) y `8080` (staging) disponibles
+- Puertos `4321` para desarrollo y `8080` para staging, o puertos alternativos configurados mediante variables de entorno.
 
-## Estructura
+## Estructura principal
 
 ```text
 jm-soluciones/
+├── .github/workflows/ci.yml
+├── AGENTS.md
 ├── Makefile
 ├── compose.yaml
 ├── compose.staging.yaml
+├── docs/
 ├── scripts/
 │   ├── preflight_release.sh
 │   ├── check_dist_integrity.sh
@@ -46,30 +67,35 @@ jm-soluciones/
         └── utils/
 ```
 
-## Documentacion
+## Documentación
 
-- `docs/README.md` (indice general)
-- `docs/HOJA_DE_RUTA.md` (decisiones y proximo plan)
-- `docs/operacion/README.md` (uso comercial y metricas)
-- `docs/deploy/README.md` (publicacion y demo publica)
+- `AGENTS.md`: contexto operativo para continuar el proyecto.
+- `docs/README.md`: índice general de documentación.
+- `docs/HOJA_DE_RUTA.md`: decisiones, estado vigente y pendientes.
+- `docs/ui-ux/`: relevamientos, planes y seguimiento de UI/UX y conversión.
+- `docs/operacion/README.md`: operación comercial y métricas.
+- `docs/deploy/README.md`: despliegue y demo pública.
+- `docs/deploy/evidencia/`: registros históricos de preflight.
 
 ## Desarrollo local
 
-Desde la raiz del repo:
+Desde la raíz del repositorio:
 
 ```bash
 docker compose up --build
 ```
 
-Alternativa equivalente:
+O mediante Make:
 
 ```bash
 make dev
 ```
 
-URL:
+Aplicación:
 
-- `http://localhost:4321`
+```text
+http://localhost:4321
+```
 
 Detener:
 
@@ -77,53 +103,68 @@ Detener:
 docker compose down
 ```
 
-Alternativa equivalente:
+O:
 
 ```bash
 make down
 ```
 
-## Validacion tecnica
+## Quality gate local
 
-```bash
-docker run --rm -v "$PWD/site":/app -w /app node:20-alpine sh -lc "npm run check && npm run build"
-```
-
-Alternativa equivalente:
+El comando instala dependencias mediante `npm ci` y ejecuta typecheck, tests y build dentro de un contenedor efímero:
 
 ```bash
 make check
 ```
 
-## Staging local
+Comando equivalente:
 
 ```bash
-docker compose -f compose.yaml -f compose.staging.yaml up --build -d web_staging
+docker run --rm \
+  -v "$PWD/site":/app \
+  -w /app \
+  node:20-alpine \
+  sh -lc "npm ci && npm run release:preflight"
 ```
 
-Alternativa equivalente:
+El script `release:preflight` ejecuta:
+
+```bash
+npm run check
+npm run test
+npm run build
+```
+
+## Staging local
+
+Levantar el build productivo con Nginx:
 
 ```bash
 make staging
 ```
 
-URL:
-
-- `http://localhost:8080`
-
-Si el puerto `8080` esta ocupado, usar otro:
+O:
 
 ```bash
-STAGING_PORT=8088 docker compose -f compose.yaml -f compose.staging.yaml up --build -d web_staging
+docker compose -f compose.yaml -f compose.staging.yaml up --build -d web_staging
 ```
 
-Detener:
+URL predeterminada:
+
+```text
+http://localhost:8080
+```
+
+Puerto alternativo:
 
 ```bash
-docker compose -f compose.yaml -f compose.staging.yaml down
+STAGING_PORT=8088 docker compose \
+  -f compose.yaml \
+  -f compose.staging.yaml \
+  up --build -d web_staging
 ```
 
-Alternativa equivalente:
+Detener staging:
 
 ```bash
 make staging-down
@@ -131,108 +172,128 @@ make staging-down
 
 ## Preflight de release
 
-```bash
-./scripts/preflight_release.sh
-```
-
-Alternativa equivalente:
+Ejecutar antes de publicar:
 
 ```bash
 make preflight
 ```
 
-Modo estricto de galeria (falla si faltan fotos reales):
+O:
+
+```bash
+./scripts/preflight_release.sh
+```
+
+El preflight realiza:
+
+1. `npm ci` en un contenedor limpio.
+2. Typecheck con Astro.
+3. Tests unitarios con Vitest.
+4. Build estático.
+5. Validación de integridad de `dist`.
+6. Validación de activos de galería.
+7. Levantado de staging con Nginx.
+8. Smoke tests HTTP sobre página principal, robots y sitemap.
+9. Registro de evidencia en `docs/deploy/evidencia/`.
+
+Modo estricto de galería:
 
 ```bash
 ALLOW_MISSING_GALLERY=0 ./scripts/preflight_release.sh
 ```
 
-Incluye smoke HTTP automatico contra staging local (`http://localhost:8080`).
-
-## Galeria de fotos reales
-
-Ubicacion esperada:
-
-- `site/src/assets/gallery/trabajo-01.jpg`
-- `site/src/assets/gallery/trabajo-02.jpg`
-- `site/src/assets/gallery/trabajo-03.jpg`
-- `site/src/assets/gallery/trabajo-04.jpg`
-
-Chequeo rapido de faltantes:
+Puerto alternativo para staging durante el preflight:
 
 ```bash
-./scripts/check_gallery_assets.sh
-```
-
-Si faltan archivos, la landing usa fallback a placeholder en tiempo de ejecucion.
-
-## Integridad de build
-
-Valida estructura y SEO tecnico del `dist`:
-
-```bash
-./scripts/check_dist_integrity.sh
-```
-
-## Smoke HTTP
-
-Valida health de endpoints y estructura critica del HTML renderizado:
-
-```bash
-./scripts/smoke_http_check.sh http://localhost:8080
+STAGING_PORT=8088 ./scripts/preflight_release.sh
 ```
 
 ## CI
 
-Workflow incluido:
+El workflow `.github/workflows/ci.yml` se ejecuta en pushes a `main`, ramas `ticket/**`, ramas `agent/**` y pull requests hacia `main`.
 
-- `.github/workflows/ci.yml`
+Quality gate:
 
-Quality gate en cada push/PR:
-
-- `npm ci && npm run check && npm run build` en contenedor `node:20-alpine`
-- `./scripts/check_dist_integrity.sh`
-- `./scripts/check_gallery_assets.sh --allow-missing`
-- `./scripts/ci_smoke_staging.sh`
+- `npm ci`
+- `npm run check`
+- `npm run test`
+- `npm run build`
+- integridad del directorio `dist`
+- validación de galería
+- smoke tests de staging
 
 ## Variables de entorno
 
-Archivo base:
+Usar `site/.env.example` como referencia. No commitear archivos `.env` reales.
 
-- `site/.env.example`
+### Identidad y contenido
 
-Variable:
-
-- `PUBLIC_SITE_URL`
-- `PUBLIC_INSTAGRAM_URL` (opcional)
 - `PUBLIC_BUSINESS_NAME`
+- `PUBLIC_BUSINESS_H1`
+- `PUBLIC_BUSINESS_DESCRIPTOR`
+- `PUBLIC_BUSINESS_SUBTITLE`
+- `PUBLIC_BUSINESS_LABEL`
+
+### Contacto y conversión
+
 - `PUBLIC_WHATSAPP`
 - `PUBLIC_PHONE_LABEL`
-- `PUBLIC_LOCATION_LABEL`
+- `PUBLIC_WHATSAPP_MESSAGE`
+- `PUBLIC_INSTAGRAM_URL`, opcional y actualmente desactivada en la interfaz.
 
-Ejemplo:
+### Ubicación y cobertura
+
+- `PUBLIC_LOCATION_LABEL`
+- `PUBLIC_COVERAGE_LABEL`
+- `PUBLIC_ADDRESS_REFERENCE`
+- `PUBLIC_ADDRESS_LOCALITY`
+- `PUBLIC_ADDRESS_COUNTRY`
+
+### URL y SEO
+
+- `PUBLIC_SITE_URL`
+- `PUBLIC_SEO_TITLE`
+- `PUBLIC_SEO_DESCRIPTION`
+- `PUBLIC_SEO_KEYWORDS`
+
+Ejemplo mínimo para producción:
 
 ```env
 PUBLIC_SITE_URL=https://tu-dominio.com
-PUBLIC_INSTAGRAM_URL=https://www.instagram.com/jm_soluciones_electricas
-PUBLIC_BUSINESS_NAME=jm-soluciones
+PUBLIC_BUSINESS_NAME=JM Soluciones Electricas
 PUBLIC_WHATSAPP=5492613465718
 PUBLIC_PHONE_LABEL=+54 9 2613 46-5718
-PUBLIC_LOCATION_LABEL=Ciudad, Provincia - cobertura en zonas indicadas
+PUBLIC_LOCATION_LABEL=Cobertura en Gran Mendoza
+PUBLIC_ADDRESS_REFERENCE=Gran Mendoza, Mendoza
+PUBLIC_ADDRESS_LOCALITY=Mendoza
+PUBLIC_ADDRESS_COUNTRY=AR
 ```
 
-## Puntos tecnicos clave
+## Puntos técnicos clave
 
-- Configuracion Astro: `site/astro.config.mjs`
 - Contenido principal: `site/src/content/landing.ts`
-- Generacion de URL WhatsApp: `site/src/utils/whatsapp.ts`
-- SEO y schema JSON-LD: `site/src/utils/seo.ts`
-- Sitemap: `@astrojs/sitemap`
+- Tipos de contenido: `site/src/content/types.ts`
+- Páginas: `site/src/pages/`
+- Generación de URLs de WhatsApp: `site/src/utils/whatsapp.ts`
+- Schemas SEO y JSON-LD: `site/src/utils/seo.ts`
+- Tests: `site/src/utils/*.test.ts`
+- Configuración Vitest: `site/vitest.config.mts`
+- Configuración Astro: `site/astro.config.mjs`
 - Robots: `site/public/robots.txt`
+- Sitemap: `@astrojs/sitemap`
+
+## Convenciones
+
+- No hardcodear contenido comercial en componentes; centralizarlo en `landing.ts`.
+- Todo CTA nuevo de WhatsApp debe usar un origen tipado.
+- Al agregar un origen, actualizar también el generador y la documentación de métricas.
+- Registrar cambios relevantes en `docs/HOJA_DE_RUTA.md`.
+- Mantener `astro check`, Vitest y build en verde.
+- Trabajar mediante issue, rama y pull request; evitar cambios directos sobre `main`.
 
 ## Troubleshooting
 
-### Error `Cannot find module '@astrojs/sitemap'`
+### Dependencias inconsistentes
 
 ```bash
 docker compose down -v
@@ -241,4 +302,8 @@ docker compose up --build
 
 ### Puerto ocupado
 
-Ajustar puertos en `compose.yaml` / `compose.staging.yaml` o detener procesos que ya los usen.
+Cambiar los puertos en `compose.yaml`, `compose.staging.yaml` o mediante `STAGING_PORT`.
+
+### Falla el preflight por datos productivos
+
+Confirmar las variables de `site/.env.example`, especialmente `PUBLIC_SITE_URL` y `PUBLIC_ADDRESS_REFERENCE`, y volver a ejecutar el preflight.

@@ -8,9 +8,9 @@ dev:
 down:
 	docker compose down
 
-# Valida el codigo y construye la aplicacion para produccion en un contenedor efimero
+# Instala dependencias y ejecuta el quality gate completo en un contenedor efimero
 check:
-	docker run --rm -v "$$PWD/site":/app -w /app node:20-alpine sh -lc "npm run check && npm run build"
+	docker run --rm -v "$$PWD/site":/app -w /app node:20-alpine sh -lc "npm ci && npm run release:preflight"
 
 # Inicia el entorno de staging local simulando produccion (puerto 8080)
 staging:

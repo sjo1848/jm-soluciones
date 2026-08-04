@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - "ticket/**"
+      - "agent/**"
   pull_request:
     branches:
       - main
@@ -16,13 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check + build (containerized)
+      - name: Install, check, test and build (containerized)
         run: >
           docker run --rm
           -v "$GITHUB_WORKSPACE/site":/app
           -w /app
           node:20-alpine
-          sh -lc "npm ci && npm run check && npm run build"
+          sh -lc "npm ci && npm run release:preflight"
 
       - name: Dist integrity checks
         run: ./scripts/check_dist_integrity.sh

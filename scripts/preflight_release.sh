@@ -46,8 +46,8 @@ wait_http_200() {
   echo "root: $ROOT_DIR"
   echo "allow_missing_gallery: $ALLOW_MISSING_GALLERY"
   echo
-  echo "== CHECK + BUILD EN CONTENEDOR =="
-  docker run --rm -v "$ROOT_DIR/site":/app -w /app node:20-alpine sh -lc "npm run release:preflight"
+  echo "== INSTALL + CHECK + TEST + BUILD EN CONTENEDOR =="
+  docker run --rm -v "$ROOT_DIR/site":/app -w /app node:20-alpine sh -lc "npm ci && npm run release:preflight"
   echo
   echo "== INTEGRIDAD DE DIST =="
   "$ROOT_DIR/scripts/check_dist_integrity.sh"
