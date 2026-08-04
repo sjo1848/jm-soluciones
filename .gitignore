@@ -1,0 +1,9 @@
+# Evidence de QA (capturas generadas por scripts/sesiones)
+output/
+
+# Editor
+.idea/
+.vscode/
+
+# macOS
+.DS_Store

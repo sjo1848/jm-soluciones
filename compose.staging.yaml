@@ -1,0 +1,9 @@
+services:
+  web_staging:
+    build:
+      context: ./site
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "${STAGING_PORT:-8080}:80"
+    restart: unless-stopped

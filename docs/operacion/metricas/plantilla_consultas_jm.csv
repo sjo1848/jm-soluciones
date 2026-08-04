@@ -1,0 +1,3 @@
+fecha_hora,canal,origen_cta,zona,servicio,tipo_cliente,calidad_consulta,cerrada,ticket_promedio_ars,observaciones
+2026-03-03 10:15,whatsapp,hero,Gran Mendoza,Reparacion de tablero,residencial,alta,si,85000,Consulta clara con fotos del tablero
+2026-03-03 12:40,whatsapp,final,Godoy Cruz,Urgencia por cortocircuito,comercial,media,no,0,Pidio presupuesto y quedo en confirmar

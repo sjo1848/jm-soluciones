@@ -1,0 +1,227 @@
+---
+interface Props {
+  brandName: string;
+}
+
+const { brandName } = Astro.props;
+
+const navLinks = [
+  { href: '/#trabajos', label: 'Trabajos' },
+  { href: '/#servicios', label: 'Servicios' },
+  { href: '/#credenciales', label: 'Credenciales' },
+  { href: '/#cobertura', label: 'Cobertura' },
+  { href: '/#faq', label: 'FAQ' },
+];
+---
+
+<header
+  data-site-header
+  class="site-header fixed top-0 z-50 w-full border-b border-[var(--color-border)] bg-[var(--color-bg)]/94 backdrop-blur"
+>
+  <span class="electric-strip"></span>
+  <div class="site-header-inner container-shell flex items-center justify-between gap-3 py-3">
+    <a href="/" class="group inline-flex min-h-10 min-w-0 flex-col justify-center py-1">
+      <p class="electric-brand-name truncate text-xl font-black uppercase tracking-[0.08em] leading-none text-[var(--color-text)] transition-colors group-hover:text-[var(--color-brand-soft)] md:text-3xl">
+        {brandName}
+      </p>
+      <p class="hidden text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--color-text-muted)] md:block">
+        Obras, refacciones e instalaciones
+      </p>
+    </a>
+
+    <nav class="hidden items-center gap-5 text-sm font-semibold text-[var(--color-text-muted)] md:flex">
+      {navLinks.map((link) => (
+        <a href={link.href} class="electric-link transition-colors hover:text-[var(--color-brand-soft)]">{link.label}</a>
+      ))}
+    </nav>
+
+    <div class="hidden items-center gap-2 md:flex">
+      <button
+        type="button"
+        data-theme-toggle
+        class="theme-toggle inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[var(--color-text)] transition-colors hover:border-[var(--color-brand-soft)] hover:text-[var(--color-brand-soft)]"
+        aria-label="Cambiar tema"
+        title="Cambiar tema"
+      >
+        <svg data-theme-icon="sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25M12 18.75V21m9-9h-2.25M5.25 12H3m15.114 6.364-1.591-1.591M7.477 7.477 5.886 5.886m12.228 0-1.591 1.591M7.477 16.523l-1.591 1.591M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+        <svg data-theme-icon="moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="hidden size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 1 0 21.752 15.002Z" />
+        </svg>
+        <span class="text-xs font-bold uppercase tracking-[0.08em]">Tema</span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2 md:hidden">
+      <button
+        type="button"
+        data-theme-toggle
+        class="theme-toggle inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]"
+        aria-label="Cambiar tema"
+        title="Cambiar tema"
+      >
+        <svg data-theme-icon="sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25M12 18.75V21m9-9h-2.25M5.25 12H3m15.114 6.364-1.591-1.591M7.477 7.477 5.886 5.886m12.228 0-1.591 1.591M7.477 16.523l-1.591 1.591M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+        <svg data-theme-icon="moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="hidden size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 1 0 21.752 15.002Z" />
+        </svg>
+      </button>
+      <button
+        id="mobile-menu-open"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]"
+        aria-controls="mobile-drawer"
+        aria-expanded="false"
+        aria-label="Abrir menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5m-16.5 5.25h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-top-links border-t border-[var(--color-border)]/70 md:hidden" aria-label="Accesos rapidos">
+    <div class="container-shell flex flex-wrap items-center justify-center gap-2 py-2">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="inline-flex min-h-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/88 px-3 py-1.5 text-xs font-bold text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-brand-soft)] hover:text-[var(--color-brand-soft)]"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </nav>
+</header>
+
+<div id="mobile-drawer" class="pointer-events-none fixed inset-0 z-[60] hidden md:hidden">
+  <button id="mobile-drawer-backdrop" class="absolute inset-0 bg-black/45 opacity-0 transition-opacity" aria-label="Cerrar menu"></button>
+  <aside id="mobile-drawer-panel" role="dialog" aria-modal="true" aria-label="Menu de navegacion" class="electric-card absolute right-0 top-0 h-full w-[86%] max-w-sm translate-x-full border-l border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-2xl transition-transform duration-300">
+    <div class="flex items-center justify-between gap-3 border-b border-[var(--color-border)] pb-4">
+      <p class="text-sm font-extrabold uppercase tracking-[0.12em] text-[var(--color-text)]">Menu</p>
+      <button id="mobile-menu-close" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text)]" aria-label="Cerrar menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mt-4 grid gap-1" aria-label="Navegacion principal mobile">
+      {navLinks.map((link) => (
+        <a href={link.href} class="js-drawer-link rounded-lg px-3 py-3 text-sm font-bold text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface-soft)]">
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="mt-5 grid gap-2 border-t border-[var(--color-border)] pt-4">
+      <button
+        type="button"
+        data-theme-toggle
+        class="theme-toggle inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-soft)] px-3 py-2 text-sm font-bold text-[var(--color-text)]"
+        aria-label="Cambiar tema"
+        title="Cambiar tema"
+      >
+        <svg data-theme-icon="sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25M12 18.75V21m9-9h-2.25M5.25 12H3m15.114 6.364-1.591-1.591M7.477 7.477 5.886 5.886m12.228 0-1.591 1.591M7.477 16.523l-1.591 1.591M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+        <svg data-theme-icon="moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="hidden size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 1 0 21.752 15.002Z" />
+        </svg>
+        <span>Cambiar tema</span>
+      </button>
+    </div>
+  </aside>
+</div>
+
+<script>
+  const drawer = document.getElementById('mobile-drawer');
+  const panel = document.getElementById('mobile-drawer-panel');
+  const backdrop = document.getElementById('mobile-drawer-backdrop');
+  const openBtn = document.getElementById('mobile-menu-open');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const linkBtns = document.querySelectorAll('.js-drawer-link');
+  const siteHeader = document.querySelector<HTMLElement>('[data-site-header]');
+  const desktopBreakpoint = window.matchMedia('(min-width: 768px)');
+  const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  let lastFocusedElement: HTMLElement | null = null;
+
+  const isDrawerOpen = () => !!drawer && !drawer.classList.contains('hidden');
+
+  const updateHeaderOffset = () => {
+    if (!siteHeader) return;
+    document.documentElement.style.setProperty('--site-header-offset', `${siteHeader.offsetHeight}px`);
+  };
+
+  const openDrawer = () => {
+    if (!drawer || !panel || !backdrop || !openBtn) return;
+    lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    drawer.classList.remove('hidden', 'pointer-events-none');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      panel.classList.remove('translate-x-full');
+      backdrop.classList.remove('opacity-0');
+    });
+    openBtn.setAttribute('aria-expanded', 'true');
+    const firstFocusable = panel.querySelector<HTMLElement>(focusableSelector);
+    firstFocusable?.focus();
+  };
+
+  const closeDrawer = () => {
+    if (!drawer || !panel || !backdrop || !openBtn) return;
+    panel.classList.add('translate-x-full');
+    backdrop.classList.add('opacity-0');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      drawer.classList.add('hidden', 'pointer-events-none');
+    }, 260);
+    lastFocusedElement?.focus();
+  };
+
+  openBtn?.addEventListener('click', openDrawer);
+  closeBtn?.addEventListener('click', closeDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+  linkBtns.forEach((link) => link.addEventListener('click', closeDrawer));
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeDrawer();
+    if (event.key !== 'Tab' || !panel || !isDrawerOpen()) return;
+
+    const focusableElements = Array.from(panel.querySelectorAll<HTMLElement>(focusableSelector));
+    if (focusableElements.length === 0) return;
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey && document.activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+      return;
+    }
+
+    if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  });
+
+  desktopBreakpoint.addEventListener('change', (event) => {
+    if (event.matches) closeDrawer();
+  });
+
+  const syncHeaderState = () => {
+    if (!siteHeader) return;
+    siteHeader.classList.toggle('is-scrolled', window.scrollY > 10);
+    updateHeaderOffset();
+  };
+
+  syncHeaderState();
+  updateHeaderOffset();
+  window.addEventListener('scroll', syncHeaderState, { passive: true });
+  window.addEventListener('resize', updateHeaderOffset);
+  window.addEventListener('load', updateHeaderOffset);
+</script>

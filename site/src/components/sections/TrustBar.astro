@@ -1,0 +1,46 @@
+---
+import type { ProofMetric } from '../../content/types';
+
+interface Props {
+  points: string[];
+  metrics?: ProofMetric[];
+}
+
+const { points, metrics = [] } = Astro.props;
+---
+
+<section class="py-12 md:py-14" id="credenciales">
+  <div class="container-shell">
+    <div class="mb-5">
+      <div class="flex items-center gap-2">
+        <span class="h-[2px] w-7 bg-[var(--color-brand-soft)]"></span>
+        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--color-brand-soft)]">Credenciales y compromisos</p>
+      </div>
+    </div>
+
+    {metrics.length > 0 && (
+      <div class="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {metrics.slice(0, 4).map((metric) => (
+          <article class="electric-card rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4">
+            <p class="text-xl font-extrabold leading-none text-[var(--color-brand)]">{metric.value}</p>
+            <p class="mt-1 text-xs font-bold uppercase tracking-[0.08em] text-[var(--color-text)]">{metric.label}</p>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">{metric.detail}</p>
+          </article>
+        ))}
+      </div>
+    )}
+
+    <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+      {points.map((point, index) => (
+        <article class={`electric-card animate-on-scroll rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 transition-colors hover:border-[var(--color-brand-soft)]/45 delay-${(index % 3) * 100}`}>
+          <p class="flex items-start gap-2 text-sm font-semibold text-[var(--color-text)]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.6" stroke="currentColor" class="mt-0.5 size-4 shrink-0 text-[var(--color-whatsapp)]">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            <span>{point}</span>
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/sections/Header.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import Services from '../components/sections/Services.astro';
+import ProcessFlow from '../components/sections/ProcessFlow.astro';
+import TechnicalScope from '../components/sections/TechnicalScope.astro';
+import WhyChooseUs from '../components/sections/WhyChooseUs.astro';
+import Zones from '../components/sections/Zones.astro';
+import Gallery from '../components/sections/Gallery.astro';
+import Faq from '../components/sections/Faq.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import Footer from '../components/sections/Footer.astro';
+import FloatingWhatsapp from '../components/sections/FloatingWhatsapp.astro';
+import MobileActionBar from '../components/sections/MobileActionBar.astro';
+import { landingContent } from '../content/landing';
+import { buildWhatsAppUrl } from '../utils/whatsapp';
+import { buildLandingPageSchema } from '../utils/seo';
+
+const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/gallery/**/*.{jpeg,jpg,png,webp}',
+  { eager: true },
+);
+
+const resolveGalleryImage = (preferredFilenames: string[]) => {
+  for (const filename of preferredFilenames) {
+    const match = Object.keys(galleryImages).find((path) => path.endsWith(`/${filename}`));
+    if (match) return galleryImages[match].default;
+  }
+
+  const fallback = Object.keys(galleryImages)[0];
+  if (!fallback) {
+    throw new Error('No hay imagenes disponibles en src/assets/gallery.');
+  }
+  return galleryImages[fallback].default;
+};
+
+const heroBg = resolveGalleryImage([
+  'construccion-seco-vista-general.jpeg',
+  'obra-tradicional-cableado-de-losa.jpeg',
+  'local-comercial-colgantes-y-rieles.jpg',
+]);
+const finalCtaBg = resolveGalleryImage([
+  'local-comercial-colgantes-y-rieles.jpg',
+  'iluminacion-lineal-curva-frontal.jpg',
+  'construccion-seco-aberturas-y-canalizacion.jpeg',
+]);
+
+const whatsappBaseUrl = buildWhatsAppUrl(
+  landingContent.contact.whatsapp,
+  landingContent.cta.whatsappMessage,
+);
+const whatsappHeroUrl = buildWhatsAppUrl(
+  landingContent.contact.whatsapp,
+  landingContent.cta.whatsappMessage,
+  'hero',
+);
+const whatsappFinalUrl = buildWhatsAppUrl(
+  landingContent.contact.whatsapp,
+  landingContent.cta.whatsappMessage,
+  'final',
+);
+const whatsappFloatingUrl = buildWhatsAppUrl(
+  landingContent.contact.whatsapp,
+  landingContent.cta.whatsappMessage,
+  'flotante',
+);
+const topSellingService =
+  landingContent.servicesDetails.find((service) => service.slug === 'electricidad-para-obras-y-refacciones-mendoza') ??
+  landingContent.servicesDetails[0];
+// Reactivar cuando exista contenido publicado en Instagram.
+// const instagramUrl = import.meta.env.PUBLIC_INSTAGRAM_URL ?? '';
+const siteUrl = import.meta.env.PUBLIC_SITE_URL;
+const canonical = siteUrl ? new URL('/', siteUrl).toString() : Astro.url.toString();
+const schema = buildLandingPageSchema(landingContent, new URL(canonical), whatsappBaseUrl);
+---
+
+<BaseLayout
+  title={landingContent.seo.title}
+  description={landingContent.seo.description}
+  keywords={landingContent.seo.keywords}
+  canonical={canonical}
+  schema={schema}
+>
+  <Header brandName={landingContent.brand.name} />
+  <Hero
+    h1={landingContent.brand.h1}
+    descriptor={landingContent.brand.descriptor}
+    subtitle={landingContent.brand.subtitle}
+    locationLabel={landingContent.brand.locationLabel}
+    responseTimeLabel={landingContent.contact.responseTimeLabel}
+    checks={landingContent.heroChecks}
+    whatsappUrl={whatsappHeroUrl}
+    ctaLabel={landingContent.cta.primaryLabel}
+    mobileSubtitle="Electricidad para obras y refacciones en Gran Mendoza. Relevamiento y presupuesto por WhatsApp."
+    topServiceLabel={`Servicio mas solicitado: ${topSellingService.title}`}
+    topServiceHref={`/servicios/${topSellingService.slug}`}
+    commercialNotice={landingContent.legal.commercialNotice}
+    backgroundImage={heroBg}
+  />
+  <Gallery categories={landingContent.galleryCategories} />
+  <Services
+    services={landingContent.servicesDetails}
+    whatsappPhone={landingContent.contact.whatsapp}
+    ctaLabel={landingContent.cta.servicesLabel}
+  />
+  <TrustBar
+    points={landingContent.trustPoints}
+    metrics={landingContent.proofMetrics}
+  />
+  <ProcessFlow steps={landingContent.processSteps} />
+  <TechnicalScope items={landingContent.technicalScope} />
+  <WhyChooseUs points={landingContent.whyChoosePoints} />
+  <Testimonials testimonials={landingContent.testimonials} />
+  <Zones zones={landingContent.zones} coverageText={landingContent.zonesCoverageText} />
+  <Faq items={landingContent.faq} />
+  <FinalCta
+    whatsappUrl={whatsappFinalUrl}
+    label={landingContent.cta.finalLabel}
+    availabilityLabel={landingContent.legal.availability}
+    warrantyLabel={landingContent.legal.warranty}
+    topServiceLabel={topSellingService.title}
+    serviceConditions={landingContent.legal.serviceConditions}
+    backgroundImage={finalCtaBg}
+  />
+  <Footer
+    brandName={landingContent.brand.name}
+    businessLabel={landingContent.footer.businessLabel}
+    phoneLabel={landingContent.contact.phoneLabel}
+    addressReference={landingContent.footer.addressReference}
+    coverageLabel={landingContent.footer.coverageLabel}
+    serviceConditions={landingContent.legal.serviceConditions}
+    commercialNotice={landingContent.legal.commercialNotice}
+  />
+  <FloatingWhatsapp whatsappUrl={whatsappFloatingUrl} />
+  <MobileActionBar whatsappUrl={whatsappFloatingUrl} whatsappLabel={landingContent.cta.mobileLabel} />
+</BaseLayout>

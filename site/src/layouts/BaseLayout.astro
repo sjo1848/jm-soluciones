@@ -1,0 +1,271 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  canonical?: string;
+  schema?: Record<string, unknown>;
+  noindex?: boolean;
+  ogImage?: string;
+  ogImageAlt?: string;
+}
+
+const {
+  title,
+  description,
+  keywords,
+  canonical,
+  schema,
+  noindex = false,
+  ogImage = '/images/og-main.jpg',
+  ogImageAlt = title,
+} = Astro.props;
+
+const siteName = import.meta.env.PUBLIC_BUSINESS_NAME ?? 'JM Soluciones Electricas';
+const resolvedOgImage = canonical ? new URL(ogImage, canonical).toString() : ogImage;
+const robotsContent = noindex ? 'noindex,follow' : 'index,follow';
+---
+
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <script is:inline>
+      (() => {
+        const getQueryTheme = () => {
+          try {
+            const value = new URL(window.location.href).searchParams.get('theme');
+            return value === 'light' || value === 'dark' ? value : null;
+          } catch {
+            return null;
+          }
+        };
+        let storedTheme = null;
+        try {
+          storedTheme = localStorage.getItem('jm-theme');
+        } catch {
+          storedTheme = null;
+        }
+        const queryTheme = getQueryTheme();
+        const hasStoredTheme = storedTheme === 'light' || storedTheme === 'dark';
+        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        const theme = queryTheme ?? (hasStoredTheme ? storedTheme : prefersLight ? 'light' : 'dark');
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.themeMode = queryTheme ? 'query' : hasStoredTheme ? 'manual' : 'system';
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="robots" content={robotsContent} />
+    <meta id="theme-color-meta" name="theme-color" content="#0f1722" />
+    <meta property="og:locale" content="es_AR" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    {canonical && <meta name="twitter:url" content={canonical} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    {schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body class="bg-[var(--color-bg)] pb-20 text-[var(--color-text)] antialiased md:pb-0">
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    <p id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <script is:inline>
+      (() => {
+      const root = document.documentElement;
+      const themeStorageKey = 'jm-theme';
+      const themeColorMeta = document.getElementById('theme-color-meta');
+      const themeStatus = document.getElementById('theme-status');
+      const systemThemeQuery = window.matchMedia('(prefers-color-scheme: light)');
+      const getQueryTheme = () => {
+        try {
+          const value = new URL(window.location.href).searchParams.get('theme');
+          return value === 'light' || value === 'dark' ? value : null;
+        } catch {
+          return null;
+        }
+      };
+      const themeLabels = {
+        dark: 'Cambiar a tema claro',
+        light: 'Cambiar a tema oscuro',
+      };
+      const themeAnnouncements = {
+        dark: 'Tema oscuro activado',
+        light: 'Tema claro activado',
+      };
+      const themeColors = {
+        dark: '#0f1722',
+        light: '#f3f6f8',
+      };
+      const getSystemTheme = () => systemThemeQuery.matches ? 'light' : 'dark';
+      const readStoredTheme = () => {
+        try {
+          const value = localStorage.getItem(themeStorageKey);
+          return value === 'light' || value === 'dark' ? value : null;
+        } catch {
+          return null;
+        }
+      };
+      const writeStoredTheme = (theme) => {
+        try {
+          localStorage.setItem(themeStorageKey, theme);
+          return true;
+        } catch {
+          return false;
+        }
+      };
+      const getTheme = () => root.dataset.theme === 'light' ? 'light' : 'dark';
+      const updateThemeToggleButtons = (theme) => {
+        document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+          if (!(button instanceof HTMLElement)) return;
+          button.setAttribute('aria-label', themeLabels[theme]);
+          button.setAttribute('title', themeLabels[theme]);
+          button.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+          button.dataset.themeNext = theme === 'dark' ? 'light' : 'dark';
+          const darkIcon = button.querySelector('[data-theme-icon="moon"]');
+          const lightIcon = button.querySelector('[data-theme-icon="sun"]');
+          darkIcon?.classList.toggle('hidden', theme !== 'light');
+          lightIcon?.classList.toggle('hidden', theme !== 'dark');
+        });
+      };
+      const applyTheme = (theme, options = {}) => {
+        const { persist = false, mode = 'manual', announce = false } = options;
+        root.dataset.theme = theme;
+        root.dataset.themeMode = mode;
+        if (persist) {
+          const persisted = writeStoredTheme(theme);
+          if (!persisted) {
+            // Keep runtime theme even if storage is blocked.
+            root.dataset.themeMode = mode;
+          }
+        }
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute('content', themeColors[theme]);
+        }
+        if (announce && themeStatus instanceof HTMLElement) {
+          themeStatus.textContent = themeAnnouncements[theme];
+        }
+        updateThemeToggleButtons(theme);
+      };
+
+      const syncThemeFromPreference = () => {
+        const queryTheme = getQueryTheme();
+        if (queryTheme) {
+          applyTheme(queryTheme, { mode: 'query' });
+          return;
+        }
+        const storedTheme = readStoredTheme();
+        if (storedTheme) {
+          applyTheme(storedTheme, { mode: 'manual' });
+          return;
+        }
+        applyTheme(getSystemTheme(), { mode: 'system' });
+      };
+
+      syncThemeFromPreference();
+
+      document.addEventListener('click', (event) => {
+        const eventTarget = event.target;
+        if (!(eventTarget instanceof Element)) return;
+        const toggleButton = eventTarget.closest('[data-theme-toggle]');
+        if (!toggleButton) return;
+        event.preventDefault();
+        const nextTheme = getTheme() === 'dark' ? 'light' : 'dark';
+        applyTheme(nextTheme, { persist: true, mode: 'manual', announce: true });
+      });
+
+      const onSystemThemeChange = () => {
+        if (root.dataset.themeMode === 'system') {
+          applyTheme(getSystemTheme(), { mode: 'system' });
+        }
+      };
+      if (typeof systemThemeQuery.addEventListener === 'function') {
+        systemThemeQuery.addEventListener('change', onSystemThemeChange);
+      } else {
+        const legacyMediaQuery = /** @type {{ addListener?: (listener: (event: MediaQueryListEvent) => void) => void }} */ (systemThemeQuery);
+        if (typeof legacyMediaQuery.addListener === 'function') {
+          legacyMediaQuery.addListener(onSystemThemeChange);
+        }
+      }
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      const whatsappGreetingToken = '__JM_SALUDO__';
+      const getWhatsappGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour >= 6 && hour < 12) return 'buenos dias,';
+        if (hour >= 12 && hour < 20) return 'buenas tardes,';
+        return 'buenas noches,';
+      };
+      const applyWhatsappGreeting = () => {
+        const greeting = getWhatsappGreeting();
+        document.querySelectorAll('a[href*="wa.me/"]').forEach((link) => {
+          if (!(link instanceof HTMLAnchorElement)) return;
+          try {
+            const url = new URL(link.href);
+            const text = url.searchParams.get('text');
+            if (!text || !text.includes(whatsappGreetingToken)) return;
+            url.searchParams.set('text', text.replaceAll(whatsappGreetingToken, greeting));
+            link.href = url.toString();
+          } catch {
+            // Ignore malformed URLs and leave the original link untouched.
+          }
+        });
+      };
+
+      if (prefersReducedMotion.matches) {
+        elements.forEach((el) => el.classList.add('is-visible'));
+      } else {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.addEventListener('DOMContentLoaded', () => {
+        applyWhatsappGreeting();
+        elements.forEach((el) => observer.observe(el));
+      });
+      }
+
+      if (document.readyState !== 'loading') {
+        applyWhatsappGreeting();
+      } else if (prefersReducedMotion.matches) {
+        document.addEventListener('DOMContentLoaded', applyWhatsappGreeting, { once: true });
+      }
+      })();
+    </script>
+  </body>
+</html>

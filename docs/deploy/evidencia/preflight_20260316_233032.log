@@ -1,0 +1,263 @@
+== PRE-FLIGHT RELEASE ==
+fecha: 2026-03-16T23:30:32-03:00
+root: /home/sjo1848/dev/impulso-tecnico/jm-soluciones
+allow_missing_gallery: 1
+
+== CHECK + BUILD EN CONTENEDOR ==
+
+> app@0.0.1 release:preflight
+> npm run check && npm run build
+
+
+> app@0.0.1 check
+> astro check
+
+▶ Astro collects anonymous usage data.
+  This information helps us improve Astro.
+  Run "astro telemetry disable" to opt-out.
+  https://astro.build/telemetry
+
+02:30:45 [content] Syncing content
+02:30:45 [content] Astro config changed
+02:30:45 [content] Clearing content store
+02:30:45 [content] Synced content
+02:30:45 [types] Generated 199ms
+02:30:45 [check] Getting diagnostics for Astro files in /app...
+Result (27 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+
+> app@0.0.1 build
+> astro build
+
+02:31:06 [content] Syncing content
+02:31:06 [content] Synced content
+02:31:06 [types] Generated 106ms
+02:31:06 [build] output: "static"
+02:31:06 [build] mode: "static"
+02:31:06 [build] directory: /app/dist/
+02:31:06 [build] Collecting build info...
+02:31:06 [build] ✓ Completed in 146ms.
+02:31:06 [build] Building static entrypoints...
+02:31:11 [vite] ✓ built in 5.52s
+02:31:11 [build] ✓ Completed in 5.65s.
+
+ building client (vite) 
+02:31:11 [vite] transforming...
+02:31:11 [vite] ✓ 1 modules transformed.
+02:31:11 [vite] rendering chunks...
+02:31:11 [vite] ✓ built in 56ms
+
+ generating static routes 
+02:31:12 ▶ src/pages/404.astro
+02:31:12   └─ /404.html (+33ms) 
+02:31:12 ▶ src/pages/servicios/[slug].astro
+02:31:12   ├─ /servicios/reparacion-tableros-electricos-mendoza/index.html (+24ms) 
+02:31:12   ├─ /servicios/cortocircuitos-urgencias-electricas-mendoza/index.html (+9ms) 
+02:31:12   ├─ /servicios/instalaciones-electricas-domiciliarias-mendoza/index.html (+10ms) 
+02:31:12   └─ /servicios/electricidad-para-obras-y-refacciones-mendoza/index.html (+8ms) 
+02:31:12 ▶ src/pages/index.astro
+02:31:12   └─ /index.html (+40ms) 
+02:31:12 ✓ Completed in 211ms.
+
+ generating optimized images 
+02:31:12   ▶ /_astro/trabajo-04.CHykiuZT_cbMCd.webp (reused cache entry) (+3ms) (1/14)
+02:31:12   ▶ /_astro/trabajo-02.DOIX3d54_Zh91Pj.webp (reused cache entry) (+4ms) (2/14)
+02:31:12   ▶ /_astro/trabajo-03.aAfBSxWy_Ob1na.webp (reused cache entry) (+5ms) (3/14)
+02:31:12   ▶ /_astro/trabajo-01.D5H86VkW_Dy9wp.webp (reused cache entry) (+6ms) (4/14)
+02:31:12   ▶ /_astro/trabajo-04.CHykiuZT_1E9IA5.webp (reused cache entry) (+2ms) (5/14)
+02:31:12   ▶ /_astro/trabajo-03.aAfBSxWy_KimaB.webp (reused cache entry) (+1ms) (6/14)
+02:31:12   ▶ /_astro/trabajo-zip-06.wqP3_ngc_Z1HhRA8.webp (reused cache entry) (+1ms) (7/14)
+02:31:12   ▶ /_astro/trabajo-03.aAfBSxWy_Z1trImm.webp (reused cache entry) (+3ms) (8/14)
+02:31:12   ▶ /_astro/trabajo-04.CHykiuZT_Z2menbF.webp (reused cache entry) (+4ms) (9/14)
+02:31:12   ▶ /_astro/trabajo-zip-07.CkOvf916_ZxgzQk.webp (reused cache entry) (+4ms) (10/14)
+02:31:12   ▶ /_astro/trabajo-03.aAfBSxWy_UhQTw.webp (reused cache entry) (+2ms) (11/14)
+02:31:12   ▶ /_astro/trabajo-04.CHykiuZT_1EwTAU.webp (reused cache entry) (+1ms) (12/14)
+02:31:12   ▶ /_astro/trabajo-zip-05.55rTEi17_Z193qws.webp (reused cache entry) (+6ms) (13/14)
+02:31:12   ▶ /_astro/trabajo-zip-08.DqJBKjmd_5z7Rl.webp (reused cache entry) (+1ms) (14/14)
+02:31:12 ✓ Completed in 15ms.
+
+02:31:12 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+02:31:12 [build] 6 page(s) built in 6.16s
+02:31:12 [build] Complete!
+
+== INTEGRIDAD DE DIST ==
+OK   file site/dist/index.html
+OK   file site/dist/robots.txt
+OK   file site/dist/sitemap-index.xml
+OK   h1_count = 1
+OK   h2_count = 9 (>= 5)
+OK   wa_link_count = 10 (>= 5)
+OK   section_servicios
+OK   section_proceso
+OK   section_especialidades
+OK   section_diferenciales
+OK   section_cobertura
+OK   section_faq
+OK   section_testimonios
+OK   meta_description
+OK   meta_robots
+OK   canonical
+OK   schema_localbusiness
+OK   schema_offercatalog
+
+Integridad de dist: OK
+
+== ESTADO DE GALERIA ==
+Directorio de galeria: /home/sjo1848/dev/impulso-tecnico/jm-soluciones/site/src/assets/gallery
+OK   trabajo-01.jpg
+OK   trabajo-02.jpg
+OK   trabajo-03.jpg
+OK   trabajo-04.jpg
+
+Galeria completa.
+
+== STAGING NGINX UP ==
+#1 [internal] load local bake definitions
+#1 reading from stdin 618B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 359B 0.0s done
+#2 DONE 0.3s
+
+#3 [internal] load metadata for docker.io/library/nginx:1.27-alpine
+#3 ...
+
+#4 [internal] load metadata for docker.io/library/node:20-alpine
+#4 DONE 0.7s
+
+#3 [internal] load metadata for docker.io/library/nginx:1.27-alpine
+#3 DONE 3.3s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 105B 0.1s done
+#5 DONE 0.4s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [production 1/2] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+#7 resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+#7 resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 1.1s done
+#7 DONE 1.2s
+
+#8 [base 1/4] FROM docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8
+#8 resolve docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8
+#8 resolve docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8 1.0s done
+#8 DONE 1.2s
+
+#6 [internal] load build context
+#6 transferring context: 7.33MB 0.3s done
+#6 DONE 0.5s
+
+#9 [base 3/4] COPY package*.json ./
+#9 CACHED
+
+#10 [base 4/4] RUN npm install --no-audit --no-fund
+#10 CACHED
+
+#11 [base 2/4] WORKDIR /app
+#11 CACHED
+
+#12 [build 1/3] WORKDIR /app
+#12 CACHED
+
+#13 [build 2/3] COPY . .
+#13 DONE 2.3s
+
+#14 [build 3/3] RUN npm run build
+#14 3.047 
+#14 3.047 > app@0.0.1 build
+#14 3.047 > astro build
+#14 3.047 
+#14 9.591 ▶ Astro collects anonymous usage data.
+#14 9.591   This information helps us improve Astro.
+#14 9.591   Run "astro telemetry disable" to opt-out.
+#14 9.591   https://astro.build/telemetry
+#14 9.591 
+#14 19.08 02:31:47 [content] Syncing content
+#14 19.09 02:31:47 [content] Synced content
+#14 19.10 02:31:47 [types] Generated 1.26s
+#14 19.10 02:31:47 [build] output: "static"
+#14 19.10 02:31:47 [build] mode: "static"
+#14 19.10 02:31:47 [build] directory: /app/dist/
+#14 19.10 02:31:47 [build] Collecting build info...
+#14 19.11 02:31:47 [build] ✓ Completed in 1.35s.
+#14 19.11 02:31:47 [build] Building static entrypoints...
+#14 25.77 02:31:54 [vite] ✓ built in 6.47s
+#14 25.77 02:31:54 [build] ✓ Completed in 6.65s.
+#14 25.77 
+#14 25.77  building client (vite) 
+#14 25.85 02:31:54 [vite] transforming...
+#14 25.89 02:31:54 [vite] ✓ 1 modules transformed.
+#14 25.91 02:31:54 [vite] rendering chunks...
+#14 25.92 02:31:54 [vite] ✓ built in 133ms
+#14 25.96 
+#14 25.96  generating static routes 
+#14 26.02 02:31:54 ▶ src/pages/404.astro
+#14 26.02 02:31:54   └─ /404.html (+43ms) 
+#14 26.13 02:31:54 ▶ src/pages/servicios/[slug].astro
+#14 26.14 02:31:54   ├─ /servicios/reparacion-tableros-electricos-mendoza/index.html (+35ms) 
+#14 26.17 02:31:54   ├─ /servicios/cortocircuitos-urgencias-electricas-mendoza/index.html (+15ms) 
+#14 26.19 02:31:54   ├─ /servicios/instalaciones-electricas-domiciliarias-mendoza/index.html (+13ms) 
+#14 26.20 02:31:55   └─ /servicios/electricidad-para-obras-y-refacciones-mendoza/index.html (+13ms) 
+#14 26.24 02:31:55 ▶ src/pages/index.astro
+#14 26.24 02:31:55   └─ /index.html (+54ms) 
+#14 26.29 02:31:55 ✓ Completed in 361ms.
+#14 26.29 
+#14 26.29  generating optimized images 
+#14 27.54 02:31:56   ▶ /_astro/trabajo-02.DOIX3d54_Zh91Pj.webp (before: 138kB, after: 20kB) (+1.24s) (1/14)
+#14 27.69 02:31:56   ▶ /_astro/trabajo-03.aAfBSxWy_Ob1na.webp (before: 114kB, after: 12kB) (+1.39s) (2/14)
+#14 27.91 02:31:56   ▶ /_astro/trabajo-01.D5H86VkW_Dy9wp.webp (before: 143kB, after: 22kB) (+1.62s) (3/14)
+#14 28.68 02:31:57   ▶ /_astro/trabajo-03.aAfBSxWy_KimaB.webp (before: 114kB, after: 16kB) (+985ms) (4/14)
+#14 28.72 02:31:57   ▶ /_astro/trabajo-04.CHykiuZT_cbMCd.webp (before: 140kB, after: 58kB) (+2.42s) (5/14)
+#14 29.17 02:31:57   ▶ /_astro/trabajo-03.aAfBSxWy_Z1trImm.webp (before: 114kB, after: 5kB) (+493ms) (6/14)
+#14 29.55 02:31:58   ▶ /_astro/trabajo-03.aAfBSxWy_UhQTw.webp (before: 114kB, after: 8kB) (+383ms) (7/14)
+#14 29.83 02:31:58   ▶ /_astro/trabajo-zip-05.55rTEi17_Z193qws.webp (before: 235kB, after: 138kB) (+2.28s) (8/14)
+#14 30.21 02:31:59   ▶ /_astro/trabajo-zip-06.wqP3_ngc_Z1HhRA8.webp (before: 238kB, after: 143kB) (+2.29s) (9/14)
+#14 31.43 02:32:00   ▶ /_astro/trabajo-zip-07.CkOvf916_ZxgzQk.webp (before: 164kB, after: 67kB) (+1.88s) (10/14)
+#14 31.66 02:32:00   ▶ /_astro/trabajo-zip-08.DqJBKjmd_5z7Rl.webp (before: 274kB, after: 162kB) (+1.83s) (11/14)
+#14 31.85 02:32:00   ▶ /_astro/trabajo-04.CHykiuZT_1E9IA5.webp (before: 140kB, after: 88kB) (+3.12s) (12/14)
+#14 32.29 02:32:01   ▶ /_astro/trabajo-04.CHykiuZT_Z2menbF.webp (before: 140kB, after: 26kB) (+441ms) (13/14)
+#14 32.73 02:32:01   ▶ /_astro/trabajo-04.CHykiuZT_1EwTAU.webp (before: 140kB, after: 32kB) (+440ms) (14/14)
+#14 32.73 02:32:01 ✓ Completed in 6.44s.
+#14 32.73 
+#14 32.80 02:32:01 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+#14 32.80 02:32:01 [build] 6 page(s) built in 15.04s
+#14 32.80 02:32:01 [build] Complete!
+#14 32.93 npm notice
+#14 32.93 npm notice New major version of npm available! 10.8.2 -> 11.11.1
+#14 32.93 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.11.1
+#14 32.93 npm notice To update run: npm install -g npm@11.11.1
+#14 32.93 npm notice
+#14 DONE 33.8s
+
+#7 [production 1/2] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+#7 CACHED
+
+#15 [production 2/2] COPY --from=build /app/dist /usr/share/nginx/html
+#15 DONE 2.0s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 3.4s done
+#16 exporting manifest sha256:a6f81f38a4547a9fbb66448957d8e99f6ccddbced28e47f52cce65873f2f76ac
+#16 exporting manifest sha256:a6f81f38a4547a9fbb66448957d8e99f6ccddbced28e47f52cce65873f2f76ac 0.4s done
+#16 exporting config sha256:7344e317cf14bb0dd5f71fbf5755b300ee23bd97df898547210eaba86bf098e2
+#16 exporting config sha256:7344e317cf14bb0dd5f71fbf5755b300ee23bd97df898547210eaba86bf098e2 0.3s done
+#16 exporting attestation manifest sha256:9fb91f6a45532e7f4f3074060c052f016000c1a908bb621c591ed9411c8a1801
+#16 exporting attestation manifest sha256:9fb91f6a45532e7f4f3074060c052f016000c1a908bb621c591ed9411c8a1801 0.7s done
+#16 exporting manifest list sha256:78cd87235cd1f7587188f008356123124202b726e98fc093a88641e7501e5c28
+#16 exporting manifest list sha256:78cd87235cd1f7587188f008356123124202b726e98fc093a88641e7501e5c28 0.4s done
+#16 naming to docker.io/library/jm-soluciones-web_staging:latest
+#16 naming to docker.io/library/jm-soluciones-web_staging:latest 0.1s done
+#16 unpacking to docker.io/library/jm-soluciones-web_staging:latest
+#16 unpacking to docker.io/library/jm-soluciones-web_staging:latest 0.6s done
+#16 DONE 6.4s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s

@@ -1,0 +1,39 @@
+---
+import SectionTitle from '../ui/SectionTitle.astro';
+import type { ProofMetric, TrustBadge } from '../../content/types';
+
+interface Props {
+  metrics: ProofMetric[];
+  badges: TrustBadge[];
+}
+
+const { metrics, badges } = Astro.props;
+---
+
+<section class="py-14" id="credenciales">
+  <div class="container-shell">
+    <SectionTitle
+      eyebrow="Solvencia tecnica"
+      title="Indicadores y credenciales para contratar con confianza"
+      description="Datos concretos antes de contratar."
+    />
+
+    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {metrics.map((metric) => (
+        <article class="panel p-5">
+          <p class="text-2xl font-extrabold leading-none text-[var(--color-brand)]">{metric.value}</p>
+          <h3 class="mt-2 text-lg font-bold leading-tight text-[var(--color-text)]">{metric.label}</h3>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {badges.slice(0, 3).map((badge, index) => (
+        <article class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-brand-soft)]">Control {String(index + 1).padStart(2, '0')}</p>
+          <h3 class="mt-2 text-base font-extrabold text-[var(--color-text)]">{badge.title}</h3>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

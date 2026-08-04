@@ -1,0 +1,25 @@
+name: jm-soluciones
+
+services:
+  web:
+    build:
+      context: ./site
+      dockerfile: Dockerfile
+      target: dev
+    working_dir: /app
+    command: >
+      sh -lc "
+      npm install --no-audit --no-fund &&
+      npm run dev:host
+      "
+    ports:
+      - "4321:4321"
+    volumes:
+      - ./site:/app
+      - jm_node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped
+
+volumes:
+  jm_node_modules:

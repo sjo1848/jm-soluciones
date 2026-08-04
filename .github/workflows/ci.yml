@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - "ticket/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check + build (containerized)
+        run: >
+          docker run --rm
+          -v "$GITHUB_WORKSPACE/site":/app
+          -w /app
+          node:20-alpine
+          sh -lc "npm ci && npm run check && npm run build"
+
+      - name: Dist integrity checks
+        run: ./scripts/check_dist_integrity.sh
+
+      - name: Gallery readiness (allow missing in CI)
+        run: ./scripts/check_gallery_assets.sh --allow-missing
+
+      - name: Staging smoke checks (containerized)
+        run: ./scripts/ci_smoke_staging.sh

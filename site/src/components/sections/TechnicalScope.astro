@@ -1,0 +1,42 @@
+---
+import SectionTitle from '../ui/SectionTitle.astro';
+import type { TechnicalScopeItem } from '../../content/types';
+
+interface Props {
+  items: TechnicalScopeItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="py-16 md:py-18" id="especialidades">
+  <div class="container-shell">
+    <SectionTitle
+      eyebrow="Especialidades tecnicas"
+      title="Alcances tecnicos que resolvemos con mayor frecuencia"
+      description="Obras, tableros, instalaciones y puestas en seguridad con criterio tecnico."
+    />
+
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      {items.map((item) => (
+        <article class="electric-card panel p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-brand-soft)]">Alcance frecuente</p>
+          <h3 class="mt-2 flex items-center gap-2 text-2xl font-extrabold leading-[1.05] text-[var(--color-text)]">
+            <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-brand-soft)]"></span>
+            {item.title}
+          </h3>
+          <ul class="mt-5 space-y-3 text-sm text-[var(--color-text-muted)]">
+            {item.points.map((point) => (
+              <li class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="mt-0.5 size-3.5 shrink-0 text-[var(--color-whatsapp)]">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                </svg>
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

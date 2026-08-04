@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/sections/Header.astro';
+import Footer from '../components/sections/Footer.astro';
+import FloatingWhatsapp from '../components/sections/FloatingWhatsapp.astro';
+import MobileActionBar from '../components/sections/MobileActionBar.astro';
+import { landingContent } from '../content/landing';
+import { buildWhatsAppUrl } from '../utils/whatsapp';
+
+const whatsappUrl = buildWhatsAppUrl(
+  landingContent.contact.whatsapp,
+  'Hola, no encontré la página que buscaba en la web, ¿podrían ayudarme?',
+  '404'
+);
+// Reactivar cuando exista contenido publicado en Instagram.
+// const instagramUrl = import.meta.env.PUBLIC_INSTAGRAM_URL ?? '';
+---
+
+<BaseLayout
+  title="Pagina no encontrada | jm-soluciones"
+  description="Lo sentimos, la página que buscas no existe o ha sido movida."
+  noindex={true}
+>
+  <Header brandName={landingContent.brand.name} />
+
+  <section class="main-with-header-offset flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
+    <p class="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-brand-soft)]">Error de navegación</p>
+    <h1 class="mt-3 text-7xl font-black text-[var(--color-text)] md:text-8xl">404</h1>
+    <p class="mt-4 text-2xl font-bold text-[var(--color-text)] md:text-3xl">Página no encontrada</p>
+
+    <p class="mb-10 mt-5 max-w-md text-lg text-[var(--color-text-muted)]">
+      La dirección puede haber cambiado o el enlace no es correcto. Volvé al inicio o escribinos por WhatsApp.
+    </p>
+
+    <div class="flex flex-col items-center gap-4 sm:flex-row">
+      <a
+        href="/"
+        class="electric-cta inline-flex items-center justify-center rounded-xl bg-[var(--color-brand-cta)] px-8 py-4 text-sm font-bold text-white transition hover:bg-[var(--color-brand-cta-hover)]"
+      >
+        Volver al inicio
+      </a>
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        class="electric-cta-secondary inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-8 py-4 text-sm font-bold text-[var(--color-text)] transition hover:border-[var(--color-whatsapp)]"
+      >
+        Pedir presupuesto por WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <Footer
+    brandName={landingContent.brand.name}
+    businessLabel={landingContent.footer.businessLabel}
+    phoneLabel={landingContent.contact.phoneLabel}
+    addressReference={landingContent.footer.addressReference}
+    coverageLabel={landingContent.footer.coverageLabel}
+    serviceConditions={landingContent.legal.serviceConditions}
+    commercialNotice={landingContent.legal.commercialNotice}
+  />
+  <FloatingWhatsapp whatsappUrl={whatsappUrl} />
+  <MobileActionBar whatsappUrl={whatsappUrl} whatsappLabel={landingContent.cta.mobileLabel} />
+</BaseLayout>

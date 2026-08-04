@@ -1,0 +1,248 @@
+== PRE-FLIGHT RELEASE ==
+fecha: 2026-03-16T23:34:14-03:00
+root: /home/sjo1848/dev/impulso-tecnico/jm-soluciones
+allow_missing_gallery: 1
+
+== CHECK + BUILD EN CONTENEDOR ==
+
+> app@0.0.1 release:preflight
+> npm run check && npm run build
+
+
+> app@0.0.1 check
+> astro check
+
+▶ Astro collects anonymous usage data.
+  This information helps us improve Astro.
+  Run "astro telemetry disable" to opt-out.
+  https://astro.build/telemetry
+
+02:34:26 [content] Syncing content
+02:34:27 [content] Synced content
+02:34:27 [types] Generated 205ms
+02:34:27 [check] Getting diagnostics for Astro files in /app...
+Result (27 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+
+> app@0.0.1 build
+> astro build
+
+02:34:53 [content] Syncing content
+02:34:53 [content] Synced content
+02:34:53 [types] Generated 193ms
+02:34:53 [build] output: "static"
+02:34:53 [build] mode: "static"
+02:34:53 [build] directory: /app/dist/
+02:34:53 [build] Collecting build info...
+02:34:53 [build] ✓ Completed in 290ms.
+02:34:53 [build] Building static entrypoints...
+02:35:00 [vite] ✓ built in 7.15s
+02:35:00 [build] ✓ Completed in 7.31s.
+
+ building client (vite) 
+02:35:00 [vite] transforming...
+02:35:00 [vite] ✓ 1 modules transformed.
+02:35:00 [vite] rendering chunks...
+02:35:00 [vite] ✓ built in 97ms
+
+ generating static routes 
+02:35:00 ▶ src/pages/404.astro
+02:35:00   └─ /404.html (+41ms) 
+02:35:00 ▶ src/pages/servicios/[slug].astro
+02:35:00   ├─ /servicios/reparacion-tableros-electricos-mendoza/index.html (+32ms) 
+02:35:00   ├─ /servicios/cortocircuitos-urgencias-electricas-mendoza/index.html (+11ms) 
+02:35:00   ├─ /servicios/instalaciones-electricas-domiciliarias-mendoza/index.html (+11ms) 
+02:35:00   └─ /servicios/electricidad-para-obras-y-refacciones-mendoza/index.html (+10ms) 
+02:35:00 ▶ src/pages/index.astro
+02:35:00   └─ /index.html (+44ms) 
+02:35:00 ✓ Completed in 273ms.
+
+ generating optimized images 
+02:35:00   ▶ /_astro/trabajo-02.DOIX3d54_Zh91Pj.webp (reused cache entry) (+2ms) (1/14)
+02:35:00   ▶ /_astro/trabajo-04.CHykiuZT_cbMCd.webp (reused cache entry) (+2ms) (2/14)
+02:35:00   ▶ /_astro/trabajo-01.D5H86VkW_Dy9wp.webp (reused cache entry) (+4ms) (3/14)
+02:35:00   ▶ /_astro/trabajo-03.aAfBSxWy_Ob1na.webp (reused cache entry) (+3ms) (4/14)
+02:35:00   ▶ /_astro/trabajo-04.CHykiuZT_1E9IA5.webp (reused cache entry) (+2ms) (5/14)
+02:35:00   ▶ /_astro/trabajo-zip-05.55rTEi17_Z193qws.webp (reused cache entry) (+2ms) (6/14)
+02:35:00   ▶ /_astro/trabajo-03.aAfBSxWy_KimaB.webp (reused cache entry) (+3ms) (7/14)
+02:35:00   ▶ /_astro/trabajo-zip-06.wqP3_ngc_Z1HhRA8.webp (reused cache entry) (+3ms) (8/14)
+02:35:00   ▶ /_astro/trabajo-04.CHykiuZT_Z2menbF.webp (reused cache entry) (+2ms) (9/14)
+02:35:00   ▶ /_astro/trabajo-zip-07.CkOvf916_ZxgzQk.webp (reused cache entry) (+2ms) (10/14)
+02:35:00   ▶ /_astro/trabajo-03.aAfBSxWy_Z1trImm.webp (reused cache entry) (+2ms) (11/14)
+02:35:00   ▶ /_astro/trabajo-04.CHykiuZT_1EwTAU.webp (reused cache entry) (+1ms) (12/14)
+02:35:00   ▶ /_astro/trabajo-zip-08.DqJBKjmd_5z7Rl.webp (reused cache entry) (+3ms) (13/14)
+02:35:00   ▶ /_astro/trabajo-03.aAfBSxWy_UhQTw.webp (reused cache entry) (+1ms) (14/14)
+02:35:00 ✓ Completed in 13ms.
+
+02:35:01 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+02:35:01 [build] 6 page(s) built in 8.12s
+02:35:01 [build] Complete!
+
+== INTEGRIDAD DE DIST ==
+OK   file site/dist/index.html
+OK   file site/dist/robots.txt
+OK   file site/dist/sitemap-index.xml
+OK   h1_count = 1
+OK   h2_count = 9 (>= 5)
+OK   wa_link_count = 10 (>= 5)
+OK   section_servicios
+OK   section_proceso
+OK   section_especialidades
+OK   section_diferenciales
+OK   section_cobertura
+OK   section_faq
+OK   section_testimonios
+OK   meta_description
+OK   meta_robots
+OK   canonical
+OK   schema_localbusiness
+OK   schema_offercatalog
+
+Integridad de dist: OK
+
+== ESTADO DE GALERIA ==
+Directorio de galeria: /home/sjo1848/dev/impulso-tecnico/jm-soluciones/site/src/assets/gallery
+OK   trabajo-01.jpg
+OK   trabajo-02.jpg
+OK   trabajo-03.jpg
+OK   trabajo-04.jpg
+
+Galeria completa.
+
+== STAGING NGINX UP ==
+#1 [internal] load local bake definitions
+#1 reading from stdin 618B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 359B done
+#2 DONE 0.2s
+
+#3 [internal] load metadata for docker.io/library/node:20-alpine
+#3 DONE 0.6s
+
+#4 [internal] load metadata for docker.io/library/nginx:1.27-alpine
+#4 DONE 1.2s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 105B done
+#5 DONE 0.2s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [base 1/4] FROM docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8
+#7 resolve docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8
+#7 resolve docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8 0.9s done
+#7 DONE 1.0s
+
+#8 [production 1/2] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+#8 resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+#8 resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 0.9s done
+#8 DONE 1.1s
+
+#6 [internal] load build context
+#6 transferring context: 260.08kB 0.0s done
+#6 DONE 0.3s
+
+#9 [build 1/3] WORKDIR /app
+#9 CACHED
+
+#10 [build 2/3] COPY . .
+#10 CACHED
+
+#11 [build 3/3] RUN npm run build
+#11 CACHED
+
+#12 [base 2/4] WORKDIR /app
+#12 CACHED
+
+#13 [base 3/4] COPY package*.json ./
+#13 CACHED
+
+#14 [base 4/4] RUN npm install --no-audit --no-fund
+#14 CACHED
+
+#15 [production 2/2] COPY --from=build /app/dist /usr/share/nginx/html
+#15 CACHED
+
+#16 exporting to image
+#16 exporting layers 0.0s done
+#16 exporting manifest sha256:a6f81f38a4547a9fbb66448957d8e99f6ccddbced28e47f52cce65873f2f76ac 0.1s done
+#16 exporting config sha256:7344e317cf14bb0dd5f71fbf5755b300ee23bd97df898547210eaba86bf098e2
+#16 exporting config sha256:7344e317cf14bb0dd5f71fbf5755b300ee23bd97df898547210eaba86bf098e2 0.1s done
+#16 exporting attestation manifest sha256:ef3582f64de06254a487025417f433feb7000bd01fcb4975fb79e999fa4d48eb
+#16 exporting attestation manifest sha256:ef3582f64de06254a487025417f433feb7000bd01fcb4975fb79e999fa4d48eb 0.7s done
+#16 exporting manifest list sha256:a523c0708e800cba693f69e8def7e49b8fd1d962ac1ece13326614ee252fce8e
+#16 exporting manifest list sha256:a523c0708e800cba693f69e8def7e49b8fd1d962ac1ece13326614ee252fce8e 0.4s done
+#16 naming to docker.io/library/jm-soluciones-web_staging:latest
+#16 naming to docker.io/library/jm-soluciones-web_staging:latest 0.1s done
+#16 unpacking to docker.io/library/jm-soluciones-web_staging:latest 0.1s done
+#16 DONE 2.0s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+OK   staging root listo (HTTP 200) intento 2/30
+
+== HTTP HEAD STAGING / ==
+HTTP/1.1 200 OK
+Server: nginx/1.27.5
+Date: Tue, 17 Mar 2026 02:35:16 GMT
+Content-Type: text/html
+Content-Length: 128922
+Last-Modified: Tue, 17 Mar 2026 02:31:55 GMT
+Connection: keep-alive
+ETag: "69b8bd1b-1f79a"
+Accept-Ranges: bytes
+
+
+== HTTP HEAD STAGING /robots.txt ==
+HTTP/1.1 200 OK
+Server: nginx/1.27.5
+Date: Tue, 17 Mar 2026 02:35:16 GMT
+Content-Type: text/plain
+Content-Length: 52
+Last-Modified: Tue, 17 Mar 2026 02:31:54 GMT
+Connection: keep-alive
+ETag: "69b8bd1a-34"
+Accept-Ranges: bytes
+
+
+== HTTP HEAD STAGING /sitemap-index.xml ==
+HTTP/1.1 200 OK
+Server: nginx/1.27.5
+Date: Tue, 17 Mar 2026 02:35:16 GMT
+Content-Type: text/xml
+Content-Length: 184
+Last-Modified: Tue, 17 Mar 2026 02:32:01 GMT
+Connection: keep-alive
+ETag: "69b8bd21-b8"
+Accept-Ranges: bytes
+
+
+== SMOKE HTTP STAGING ==
+Base URL: http://localhost:8088
+OK   status_root = 200
+OK   status_robots = 200
+OK   status_sitemap = 200
+OK   h1_count = 1
+OK   wa_link_count = 10 (>= 5)
+OK   section_servicios
+OK   section_proceso
+OK   section_especialidades
+OK   section_diferenciales
+OK   section_cobertura
+OK   section_faq
+OK   section_testimonios
+OK   meta_description
+OK   schema_localbusiness
+
+Smoke HTTP check: OK
+
+== STAGING DOWN ==
+Going to remove jm-soluciones-web_staging-1
+
+resultado: OK
