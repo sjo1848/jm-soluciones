@@ -32,7 +32,7 @@ const resolveGalleryImage = (preferredFilenames: string[]) => {
 
   const fallback = Object.keys(galleryImages)[0];
   if (!fallback) {
-    throw new Error('No hay imagenes disponibles en src/assets/gallery.');
+    throw new Error('No hay imágenes disponibles en src/assets/gallery.');
   }
   return galleryImages[fallback].default;
 };
@@ -84,7 +84,7 @@ const schema = buildLandingPageSchema(landingContent, new URL(canonical), whatsa
   canonical={canonical}
   schema={schema}
 >
-  <Header brandName={landingContent.brand.name} />
+  <Header brandName={landingContent.brand.name} whatsappUrl={whatsappHeroUrl} />
   <Hero
     h1={landingContent.brand.h1}
     descriptor={landingContent.brand.descriptor}
@@ -95,23 +95,23 @@ const schema = buildLandingPageSchema(landingContent, new URL(canonical), whatsa
     whatsappUrl={whatsappHeroUrl}
     ctaLabel={landingContent.cta.primaryLabel}
     mobileSubtitle="Electricidad para obras y refacciones en Gran Mendoza. Relevamiento y presupuesto por WhatsApp."
-    topServiceLabel={`Servicio mas solicitado: ${topSellingService.title}`}
+    topServiceLabel={`Servicio más solicitado: ${topSellingService.title}`}
     topServiceHref={`/servicios/${topSellingService.slug}`}
     commercialNotice={landingContent.legal.commercialNotice}
     backgroundImage={heroBg}
-  />
-  <Gallery categories={landingContent.galleryCategories} />
-  <Services
-    services={landingContent.servicesDetails}
-    whatsappPhone={landingContent.contact.whatsapp}
-    ctaLabel={landingContent.cta.servicesLabel}
   />
   <TrustBar
     points={landingContent.trustPoints}
     metrics={landingContent.proofMetrics}
   />
+  <Services
+    services={landingContent.servicesDetails}
+    whatsappPhone={landingContent.contact.whatsapp}
+    ctaLabel={landingContent.cta.servicesLabel}
+  />
   <ProcessFlow steps={landingContent.processSteps} />
   <TechnicalScope items={landingContent.technicalScope} />
+  <Gallery categories={landingContent.galleryCategories} />
   <WhyChooseUs points={landingContent.whyChoosePoints} />
   <Testimonials testimonials={landingContent.testimonials} />
   <Zones zones={landingContent.zones} coverageText={landingContent.zonesCoverageText} />
